@@ -13,21 +13,7 @@ export function setUpConnection() {
 export function listNotes(id) {
     return Note.find();
 }
-export function createUser(data) {
-    const user = new User({
-        Name: data.Name,
-        Password: data.Password,
-    });
-    User.find({}, function(err, users) {
-        var userMap = {};
-    
-        users.forEach(function(user) {
-            console.log(user);
-          //userMap[user._id] = user;
-        });
-    });
-    return user.save();
-}
+
 export function createNote(data) {
     console.log(data);
     const note = new Note({
@@ -42,4 +28,36 @@ export function createNote(data) {
 export function deleteNote(id) {
     return Note.findById(id).remove();
 }
+export function findUser(data){
+    var f=false;
 
+    return User.find({},()=>{}).then(arr=>{
+        [].forEach.call(arr,(user)=>{
+            if(user.Name==data.Username&&user.Password==data.Password)
+                f=true;
+        })
+        return new Promise((res,rej)=>{res(f)});
+    })
+}
+export function Reg(data){
+    var f=true;
+    return User.find({},()=>{}).then(arr=>{
+        [].forEach.call(arr,(user)=>{
+            if(user.Name==data.Username)
+                f=false;
+        })
+        return new Promise((res,rej)=>{res(f)});
+    }).then((res)=>{
+        if(res){
+            const user = new User({
+                Name: data.Username,
+                Password: data.Password,
+                isOnline:true
+            });
+            user.save();
+            return new Promise((res,rej)=>{res(true)});
+        }
+        else
+            return new Promise((res,rej)=>{res(false)});
+    })
+}

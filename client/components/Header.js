@@ -5,7 +5,6 @@ import styled from 'styled-components';
 const Header=styled.div`
   top: 0;
   left: 0;
-  z-index: 1030;
   position: fixed;
   display: flex;
   justify-content: center;
@@ -14,6 +13,7 @@ const Header=styled.div`
   height: 48px;
   width: 100%;
   color:white;
+  font-size:18px;
 `;
 
 

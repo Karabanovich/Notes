@@ -22,8 +22,12 @@ app.get('/notes', (req, res) => {
     db.listNotes().then(data => res.send(data));
 });
 
-app.post('/users', (req, res) => {
-    db.createUser(req.body).then(data => res.send(data));
+
+app.put('/users/isExist', (req, res) => {
+    db.findUser(req.body).then(data => res.send(data));
+});
+app.put('/users/Reg', (req, res) => {
+    db.Reg(req.body).then(data => res.send(data));
 });
 
 app.delete('/notes/:id', (req, res) => {
