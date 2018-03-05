@@ -1,5 +1,4 @@
 var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     entry: "./client/main.js",
     output: {
@@ -53,10 +52,5 @@ module.exports = {
                 loader: "json-loader"
             }
         ]
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-          template: 'public/index.html'
-        })
-      ]
+    }
 }
