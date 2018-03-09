@@ -1,6 +1,6 @@
 var webpack = require('webpack');
 module.exports = {
-    entry: "./client/main.js",
+    entry: "./client/index.js",
     output: {
         path: __dirname + '/public/',
         publicPath: '/',
