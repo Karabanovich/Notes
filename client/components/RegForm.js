@@ -1,18 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 import RegActions from '../actions/RegActions';
-
+import styled from 'styled-components';
 import Sign from './Sign'
 import TextField from 'material-ui/TextField';
-import { Switch, Route, Link} from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import { withRouter } from "react-router-dom";
-import styled from 'styled-components';
-
 const Incorrect = styled.div`
   font-size:13px;
   color:red;
 `;
 const Back = styled.div`
-  margin-top: 48px;
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
@@ -35,11 +32,11 @@ const Alr = styled.div`
   margin-right:5px;
 `;
 
-const Welcome=styled.div`
+const Welcome = styled.div`
   margin-top: 100px;
   color: #303f9f; 
 `
-const RegF=styled.div`
+const RegF = styled.div`
   width: 260px;
   height:190px;
   padding: 17px; 
@@ -53,7 +50,7 @@ const RegF=styled.div`
 class RegForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { Username: '', Password: '', errorText1: "",errorText2:'',alrEx:false,notFound:false};
+    this.state = { Username: '', Password: '', errorText1: "", errorText2: '', alrEx: false, notFound: false };
     this.handleChangeName = this.handleChangeName.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
     this.onIn = this.onIn.bind(this);
@@ -103,7 +100,7 @@ class RegForm extends React.Component {
 
   }
   Reset() {
-    this.setState({ errorText1: '', errorText2: '', Username: '', Password: '', notFound: false,alrEx:false });
+    this.setState({ errorText1: '', errorText2: '', Username: '', Password: '', notFound: false, alrEx: false });
   }
   render() {
     return (
