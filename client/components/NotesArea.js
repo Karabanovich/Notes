@@ -8,7 +8,6 @@ const Notes = styled.div`
 `
 const Li = styled.li`
     display:flex;
-
 `
 const Label = styled.div`
     width:10px;
