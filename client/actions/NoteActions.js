@@ -4,13 +4,13 @@ const apiPrefix='http://localhost:8080';
 
 
 
-const RegActions = {
+const NoteActions = {
     
 
-    In(data) {
-        return fetch(`${apiPrefix}/users/isExist`,{
+    addNote(user,folder,note) {
+        return fetch(`${apiPrefix}/notes/add`,{
             method: 'put',
-            body: JSON.stringify(data),
+            body: JSON.stringify({user,folder,note}),
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
@@ -21,10 +21,12 @@ const RegActions = {
             console.error(err)
         );
     },
-    Up(data) {
-        return fetch(`${apiPrefix}/users/Reg`,{
+
+
+    addFolder(user,folder) {
+        return fetch(`${apiPrefix}/folders/add`,{
             method: 'put',
-            body: JSON.stringify(data),
+            body: JSON.stringify({user,folder}),
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
@@ -34,7 +36,7 @@ const RegActions = {
         .catch(err =>
             console.error(err)
         );
-    }
+    },
 };
 
-export default RegActions;
+export default NoteActions;

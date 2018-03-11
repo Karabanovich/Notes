@@ -5,22 +5,15 @@ import bodyParser from 'body-parser';
 
 import * as db from './utils/DataBaseUtils';
 
-// Initialization of express application
+
 const app = express();
 
-// Set up connection of database
+
 db.setUpConnection();
 
-// Using bodyParser middleware
 app.use( bodyParser.json() );
 
-// Allow requests from any origin
 app.use(cors({ origin: '*' }));
-
-// RESTful api handlers
-app.get('/notes', (req, res) => {
-    db.listNotes().then(data => res.send(data));
-});
 
 
 app.put('/users/isExist', (req, res) => {
@@ -30,6 +23,14 @@ app.put('/users/Reg', (req, res) => {
     db.Reg(req.body).then(data => res.send(data));
 });
 
+app.put('/notes/add', (req, res) => {
+    db.addNote(req.body).then(data => res.send(data));
+});
+app.put('/folders/add', (req, res) => {
+    db.addFolder(req.body).then(data => res.send(data));
+});
+
+////////////////////////////////////////////////////////////////////////////////////
 app.delete('/notes/:id', (req, res) => {
     db.deleteNote(req.params.id).then(data => res.send(data));
 });

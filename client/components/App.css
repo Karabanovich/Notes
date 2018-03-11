@@ -11,8 +11,9 @@ body,
     outline: none;
 }
 .content{
-    margin-top: 48px;
-    height: 100%;
+    position: relative;
+    top: 48px;
+    height: calc(100% - 48px);
     display: flex;
     flex-direction: column;
 }

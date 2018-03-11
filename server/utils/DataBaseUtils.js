@@ -2,31 +2,17 @@ import mongoose from "mongoose";
 
 
 
-import '../models/Note';
+//import '../models/Note';
 import '../models/User';
-const Note = mongoose.model('Note');
+//const Note = mongoose.model('Note');
 const User = mongoose.model('User');
 
 export function setUpConnection() {
     mongoose.connect(`mongodb://localhost:27017/Users`);
 }
 
-export function createUser(data) {
-    const user = new User({
-        Name: data.Name,
-        Password: data.Password,
-    });
-    User.find({}, function(err, users) {
-        var userMap = {};
-    
-        users.forEach(function(user) {
-            console.log(user);
-          //userMap[user._id] = user;
-        });
-    });
-    return user.save();
-}
 
+/*
 export function listNotes(id) {
     return Note.find();
 }
@@ -55,36 +41,73 @@ export function findNote(id){
 export function deleteNote(id) {
     return Note.findById(id).remove();
 }
-export function findUser(data){
-    var f=false;
-
-    return User.find({},()=>{}).then(arr=>{
-        [].forEach.call(arr,(user)=>{
-            if(user.Name==data.Username&&user.Password==data.Password)
-                f=true;
+*/
+/////////////////////////////////////////////////////////
+export function findUser(data) {
+    var Folders = null;
+    return User.find({}, () => { }).then(arr => {
+        [].forEach.call(arr, (user) => {
+            if (user.Name == data.Username && user.Password == data.Password) {
+                Folders = user.Folders;
+            }
         })
-        return new Promise((res,rej)=>{res(f)});
+        return new Promise((res, rej) => { res(Folders) });
     })
 }
-export function Reg(data){
-    var f=true;
-    return User.find({},()=>{}).then(arr=>{
-        [].forEach.call(arr,(user)=>{
-            if(user.Name==data.Username)
-                f=false;
+export function Reg(data) {
+    var f = true;
+    return User.find({}, () => { }).then(arr => {
+        [].forEach.call(arr, (user) => {
+            if (user.Name == data.Username)
+                f = false;
         })
-        return new Promise((res,rej)=>{res(f)});
-    }).then((res)=>{
-        if(res){
+        return new Promise((res, rej) => { res(f) });
+    }).then((res) => {
+        if (res) {
             const user = new User({
                 Name: data.Username,
                 Password: data.Password,
-                isOnline:true
+                Folders: [{ folderName: 'Main', Notes: [] }]
             });
             user.save();
-            return new Promise((res,rej)=>{res(true)});
+            return new Promise((res, rej) => { res(user.Folders) });
         }
         else
-            return new Promise((res,rej)=>{res(false)});
+            return new Promise((res, rej) => { res(false) });
     })
+}
+export function addNote(data) {
+    var F = false;
+    User.findOne({ Name: data.user }, (err, doc) => {
+        if (doc) {
+            let i = doc.Folders.findIndex((f) => {
+                return f.folderName === data.folder;
+            })
+            doc.Folders[i].Notes.push(data.note);
+
+            User.update({ Name: data.user }, {
+                Folders: doc.Folders
+            }, { "multi": true }, () => { });
+
+
+            F = true;
+        }
+    })
+   
+    return new Promise((res, rej) => { res(F) });
+}
+export function addFolder(data) {
+    var F = false;
+    User.findOne({ Name: data.user }, (err, doc) => {
+        if (doc) {
+            doc.Folders.push({folderName:data.folder,Notes:[]});
+
+            User.update({ Name: data.user }, {
+                Folders: doc.Folders
+            }, { "multi": true }, () => { });
+            F = true;
+        }
+    })
+   
+    return new Promise((res, rej) => { res(F) });
 }

@@ -14,6 +14,7 @@ const Header=styled.div`
   width: 100%;
   color:white;
   font-size:18px;
+  z-index:5;
 `;
 
 

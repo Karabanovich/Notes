@@ -1,9 +1,0 @@
-.RegPage{
-    
-    height: 100%;
-}
-.Main{
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
