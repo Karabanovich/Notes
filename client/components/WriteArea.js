@@ -15,9 +15,9 @@ const Textarea = styled.textarea`
     width:40%;
     min-width:150px;
     height:100px;
-    border-radius:10px;
+    border-radius:7px;
     resize: none;
-    border: 5px solid rgba(5, 5, 5, .5);
+    border: 2px solid rgba(5, 5, 5, .5);
     background-color: rgba(5,5,136,0.035);
 `
 const Header = styled.textarea`
@@ -25,9 +25,9 @@ const Header = styled.textarea`
     height:20px;
     width:40%;
     min-width:150px;
-    border-radius:10px;
+    border-radius:7px;
     resize: none;
-    border: 5px solid rgba(5, 5, 5, .5);
+    border: 2px solid rgba(5, 5, 5, .5);
     background-color: rgba(5,5,136,0.035);
 `
 const Label = styled.label`

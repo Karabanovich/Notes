@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import image from '../pic/1.jpeg';
 const Folds = styled.div`
-    position:fixed;
-    top:70px;
-    left:0;
     display:flex;
-    flex-direction:column;
-    width:15%;
+    flex-direction: column;
+    width:100%;
     height:calc(100% - 106px);
     overflow:auto;
 `
@@ -38,15 +35,21 @@ const Input = styled.input`
     border: 2px solid rgba(5, 5, 5, .5);
     background-color: rgba(5,5,136,0.035);
 `
-const Ul = styled.div`
-    display: flex;
-    flex-direction:column;
-
-`
 const Li = styled.div`
-    margin: 10px 0 10px 10px;
+    cursor:pointer;
+    margin: 5px 0 5px 5px;
     display :flex;
 `;
+
+const Left =styled.div`
+    width:15%;
+    position:fixed;
+    top:70px;
+    margin-bo ttom:80px;
+    left:0;
+    display:flex;
+    flex-direction:column;
+`
 class Folders extends Component {
     constructor(props) {
         super(props);
@@ -58,31 +61,29 @@ class Folders extends Component {
     render() {
         const store = this.props.store;
         return (
-            <Folds>
-               
+            <Left>
                 <Button onClick={() => {
                     if (this.state.f) {
-                        this.setState({f:false});
+                        this.setState({ f: false });
                         if (this.state.Name) {
-                            store.dispatch({ type: 'addFolder', folder: {folderName:this.state.Name,Notes:[]} }); this.forceUpdate()
+                            store.dispatch({ type: 'addFolder', folder: { folderName: this.state.Name, Notes: [] } }); this.forceUpdate()
                         }
                     }
                     else
-                        this.setState({f:true});
+                        this.setState({ f: true });
                 }}>Add Folder</Button>
-                 {
+                {
                     this.state.f ? <Input type="text" onChange={(e) => { this.setState({ Name: e.target.value }) }} /> : null
                 }
-                <Ul>
-                    {store.getState().folders.map((el) => (
-                        <Li onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
-                            <img src={image}/>
-                            {el.folderName}
-                        </Li>
-                    ))}
-                </Ul>
-
-            </Folds>
+                <Folds>
+                        {store.getState().folders.map((el) => (
+                            <Li onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
+                                <img src={image} width="20px" height="20px" />
+                                {el.folderName}
+                            </Li>
+                        ))}
+                </Folds>
+            </Left>
 
         )
     }
