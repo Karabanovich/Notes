@@ -1,13 +1,27 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 const Notes = styled.div`
-    display:flex;
+    margin-top:10px;
+    margin-left:15%;
     width:50%;
     height:100%;
-    overflow:auto;
 `
-const Li = styled.li`
+
+const Note = styled.div`
     display:flex;
+    flex-direction: column;
+    margin: 10px 20px 10px 20px;
+    width:50px;
+`
+const Ul = styled.ul`
+    display: inline-block;
+    list-style:none;
+    width:100%;
+`
+const Li= styled.li`
+display: inline-block;
+margin: 2%;
+width: fit-content;
 `
 const Label = styled.div`
     width:10px;
@@ -27,22 +41,24 @@ class NotesArea extends Component {
         const store = this.props.store;
         return (
             <Notes>
-                <ul>
+                <Ul>
                     {store.getState().folders.map((el) => {
                         
                         if(el.folderName === store.getState().folder){
                             return el.Notes.map((el) => (
-                                <Li >
+                                <Li>
+                                    <Note>
                                     {el.label ? <Label></Label> : null}
 
                                     <div>{el.title}</div>
                                     <div>{el.text}</div>
+                                    </Note>
                                 </Li>
 
                             ))
                         }
                     })}
-                </ul>
+                </Ul>
 
             </Notes>
 
