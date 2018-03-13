@@ -1,34 +1,62 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 const Notes = styled.div`
-    margin-top:10px;
+    margin-top:22px;
     margin-left:15%;
-    width:50%;
+    width:70%;
     height:100%;
 `
 
 const Note = styled.div`
     display:flex;
     flex-direction: column;
-    margin: 10px 20px 10px 20px;
-    width:50px;
+    margin: 0px 10px 10px 10px;
+    width:180px;
+    height:200px;
 `
 const Ul = styled.ul`
     display: inline-block;
     list-style:none;
     width:100%;
 `
-const Li= styled.li`
-display: inline-block;
-margin: 2%;
-width: fit-content;
+const Li = styled.li`
+    display: inline-block;
+    margin: 0px 20px 20px 20px;
+    width: fit-content;
+    transition: 0.2s;  
 `
-const Label = styled.div`
-    width:10px;
-    height:10px;
-    background:red;
+const Head = styled.div`
+    display:flex;
+    justify-content:space-between;
+    border: 3px solid #303f9f;
 `
-
+const Title = styled.div`
+    width: 150px;
+    min-width:120px;
+    height:20px;
+`
+const Text = styled.div`
+    border: 1px solid rgba(5, 5, 5, .5);
+    border-top:0px;
+    height: 180px;
+    word-wrap:break-word; 
+`
+const Button = styled.button` 
+    background-color:white;
+    cursor:pointer;
+    font-family: Verdana, Geneva, sans-serif; 
+    font-weight:bold; 
+    padding:0;
+    text-align:center;
+    color:red;
+    border-none;
+    height:20px;
+    width:20px;
+    border-radius:3px;
+`
+const Label = styled.label`
+    width:20px;
+`
 class NotesArea extends Component {
     constructor(props) {
         super(props);
@@ -42,26 +70,28 @@ class NotesArea extends Component {
         return (
             <Notes>
                 <Ul>
-                    <button onClick={()=>{store.dispatch({type:'sendNote',user:'Ello',note:{label:true,title:'sss',text:'sdadsa'}})}}>add</button>
-                    {store.getState().folders.map((el) => {
-                        
-                        if(el.folderName === store.getState().folder){
-                            return el.Notes.map((el,i) => {
-                                if(el.title.search(this.state.filter)!==-1)
-                                return(
-                                <Li>
-                                    <Note  onClick={()=>{store.dispatch({type:'addLabel',id:i,label:!el.label})}}>
-                                    {el.label ? <Label></Label> : null}
+                    {
+                        store.getState().folders.map((el) => {
 
-                                    <div>**{el.title}**</div>
-                                    <div>{el.text}</div>
-                                    {el.from ? <div>{el.from}</div>:null}
-                                    </Note>
-                                </Li>)
+                            if (el.folderName === store.getState().folder) {
+                                return el.Notes.map((el) => (
+                                    <Li>
+                                        <Note>
+                                            <Head>
+                                                {el.label ? <Label><input type="checkbox"/></Label> : null}
+                                                <Title>
+                                                    {el.title}
+                                                </Title>
+                                                <Button>X</Button>
+                                            </Head>
+                                            <Text>{el.text}</Text>
+                                        </Note>
+                                    </Li>
 
-                            })
-                        }
-                    })}
+                                ))
+                            }
+                        })
+                    }
                 </Ul>
 
             </Notes>
