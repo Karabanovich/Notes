@@ -1,13 +1,42 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import image from '../pic/1.jpeg';
+
+const Left =styled.div`
+    width:15%;
+    position:fixed;
+    top:70px;
+    left:0;
+    display:flex;
+    flex-direction:column;
+    height:calc(100% - 120px);
+`
 const Folds = styled.div`
+    margin-top:10px;
     display:flex;
     flex-direction: column;
     width:100%;
-    height:calc(100% - 106px);
     overflow:auto;
 `
+const Li = styled.div`
+    cursor:pointer;
+    min-height:30px;
+    margin:0px 0px 0px 5px;
+    display:flex;
+    &:hover {
+        background: rgba(53, 167, 110,0.1);
+   } 
+   &:active { 
+       background: rgba(33,147,90, 0.2); 
+       box-shadow: 0 3px rgba(33,147,90, 0.2) inset; 
+   }
+`;
+
+
+const FolderName = styled.div`
+    height:30px;
+`
+
 const Button = styled.a` 
     cursor: pointer;
     user-select:none; 
@@ -35,21 +64,7 @@ const Input = styled.input`
     border: 2px solid rgba(5, 5, 5, .5);
     background-color: rgba(5,5,136,0.035);
 `
-const Li = styled.div`
-    cursor:pointer;
-    margin: 5px 0 5px 5px;
-    display :flex;
-`;
 
-const Left =styled.div`
-    width:15%;
-    position:fixed;
-    top:70px;
-    margin-bo ttom:80px;
-    left:0;
-    display:flex;
-    flex-direction:column;
-`
 class Folders extends Component {
     constructor(props) {
         super(props);
@@ -71,7 +86,7 @@ class Folders extends Component {
                     }
                     else
                         this.setState({ f: true });
-                }}>Add Folder</Button>
+                }}>Add Book</Button>
                 {
                     this.state.f ? <Input type="text" onChange={(e) => { this.setState({ Name: e.target.value }) }} /> : null
                 }
@@ -79,7 +94,7 @@ class Folders extends Component {
                         {store.getState().folders.map((el) => (
                             <Li onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
                                 <img src={image} width="20px" height="20px" />
-                                {el.folderName}
+                                <FolderName>{el.folderName}</FolderName>
                             </Li>
                         ))}
                 </Folds>
