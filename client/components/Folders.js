@@ -45,10 +45,10 @@ const Left =styled.div`
     width:15%;
     position:fixed;
     top:70px;
-    margin-bo ttom:80px;
     left:0;
     display:flex;
     flex-direction:column;
+    height:calc(100% - 106px);
 `
 class Folders extends Component {
     constructor(props) {
