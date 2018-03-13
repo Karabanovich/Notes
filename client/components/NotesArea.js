@@ -23,7 +23,7 @@ display: inline-block;
 margin: 2%;
 width: fit-content;
 `
-const Head  = styled.div`
+const Head = styled.div`
     display:flex;
     border: 1px solid rgba(0,0,255, 0.8);
 `
@@ -60,8 +60,8 @@ class NotesArea extends Component {
                     {store.getState().folders.map((el) => {
 
                         if (el.folderName === store.getState().folder) {
-                            return el.Notes.map((el) => (
-                                <Li>
+                            return el.Notes.map((el, i) => (
+                                <Li id='i'>
                                     <Note>
                                         <Head>
                                             <Title>
@@ -69,7 +69,7 @@ class NotesArea extends Component {
                                             </Title>
                                             <Toolbar>
                                                 {el.label ? <input type="checkbox"></input> : null}
-                                                <button>D</button>
+                                                <button onClick={() => store.dispatch({ type: 'deleteNote', id: i })}>D</button>
                                             </Toolbar>
                                         </Head>
                                         <Text>{el.text}</Text>

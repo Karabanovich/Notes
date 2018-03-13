@@ -41,7 +41,7 @@ const Li = styled.div`
     display :flex;
 `;
 
-const Left =styled.div`
+const Left = styled.div`
     width:15%;
     position:fixed;
     top:70px;
@@ -56,12 +56,16 @@ class Folders extends Component {
         this.state = { Name: '', f: false };
     }
     componentDidMount() {
-        this.props.store.subscribe(() => this.forceUpdate());
+        this.props.store.subscribe(() => {
+            let a = this.props.store.getState().lastAction;
+            if (this.refs.myRef && (a === 'addFolder' || a === 'deleteFolder' || a === 'changeUser'))
+                this.forceUpdate()
+        });
     }
     render() {
         const store = this.props.store;
         return (
-            <Left>
+            <Left ref="myRef">
                 <Button onClick={() => {
                     if (this.state.f) {
                         this.setState({ f: false });
@@ -76,12 +80,12 @@ class Folders extends Component {
                     this.state.f ? <Input type="text" onChange={(e) => { this.setState({ Name: e.target.value }) }} /> : null
                 }
                 <Folds>
-                        {store.getState().folders.map((el) => (
-                            <Li onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
-                                <img src={image} width="20px" height="20px" />
-                                {el.folderName}
-                            </Li>
-                        ))}
+                    {store.getState().folders.map((el, i) => (
+                        <Li key={i} onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
+                            <img src={image} width="20px" height="20px" />
+                            {el.folderName}
+                        </Li>
+                    ))}
                 </Folds>
             </Left>
 
