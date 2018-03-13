@@ -29,7 +29,6 @@ const Li = styled.div`
    } 
    &:active { 
        background: rgba(33,147,90, 0.2); 
-       box-shadow: 0 3px rgba(33,147,90, 0.2) inset; 
    }
 `;
 
@@ -48,19 +47,19 @@ const Button = styled.a`
     text-decoration: none; 
     padding: .8em 1em calc(.8em + 3px); 
     border-radius: 3px; 
-    background: rgb(64,199,129); 
-    box-shadow: 0 -3px rgb(53,167,110) inset; 
+    background: #303f9f; 
+    box-shadow: 0 -3px #374bca inset; 
     transition: 0.2s;  
     &:hover {
-         background: rgb(53, 167, 110);
+        background: #374bca; 
     } 
     &:active { 
-        background: rgb(33,147,90); 
-        box-shadow: 0 3px rgb(33,147,90) inset; 
+        background: #2e41c2; 
+        box-shadow: 0 3px #2e41c2 inset; 
     }
 `
 const Input = styled.input`
-    margin:10px 0px 20px 0px;   
+    margin:10px 0px 5px 0px;   
     height:30px;
     border-radius:5px;
     resize: none;
