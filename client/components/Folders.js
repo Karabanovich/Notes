@@ -73,7 +73,11 @@ class Folders extends Component {
         this.state = { Name: '', f: false };
     }
     componentDidMount() {
-        this.props.store.subscribe(() => this.forceUpdate());
+        this.props.store.subscribe(() => {
+            let a = this.props.store.getState().lastAction;
+            if (a === 'addFolder' || a === 'deleteFolder' || a === 'changeUser')
+                this.forceUpdate()
+        });
     }
     render() {
         const store = this.props.store;

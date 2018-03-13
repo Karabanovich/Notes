@@ -81,6 +81,7 @@ class RegForm extends React.Component {
     if (this.state.Username != '' && this.state.Password != '') {
       RegActions.In(this.state).then((res) => {
         if (res){
+          console.log(res);
           this.props.history.push('/main/');
           this.props.store.dispatch({ type: 'changeUser',user:this.state.Username,folders:res})
         }
