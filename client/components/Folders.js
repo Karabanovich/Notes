@@ -53,30 +53,34 @@ class Folders extends Component {
         this.state = { Name: '', f: false };
     }
     componentDidMount() {
-        this.props.store.subscribe(() => this.forceUpdate());
+        this.props.store.subscribe(() => {
+            let a = this.props.store.getState().lastAction;
+            if (a === 'addFolder' || a === 'deleteFolder' || a === 'changeUser')
+                this.forceUpdate()
+        });
     }
     render() {
         const store = this.props.store;
         return (
             <Folds>
-               
+
                 <Button onClick={() => {
                     if (this.state.f) {
-                        this.setState({f:false});
+                        this.setState({ f: false });
                         if (this.state.Name) {
-                            store.dispatch({ type: 'addFolder', folder: {folderName:this.state.Name,Notes:[]} }); this.forceUpdate()
+                            store.dispatch({ type: 'addFolder', folder: { folderName: this.state.Name, Notes: [] } }); this.forceUpdate()
                         }
                     }
                     else
-                        this.setState({f:true});
+                        this.setState({ f: true });
                 }}>Add Folder</Button>
-                 {
+                {
                     this.state.f ? <Input type="text" onChange={(e) => { this.setState({ Name: e.target.value }) }} /> : null
                 }
                 <Ul>
                     {store.getState().folders.map((el) => (
                         <Li onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
-                            <img src={image}/>
+                            <img src={image} />
                             {el.folderName}
                         </Li>
                     ))}

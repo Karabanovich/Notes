@@ -32,7 +32,7 @@ const Label = styled.div`
 class NotesArea extends Component {
     constructor(props) {
         super(props);
-        //this.state = { Name: '', f: false };
+        this.state = { filter: ''};
     }
     componentDidMount() {
         this.props.store.subscribe(() => this.forceUpdate());
@@ -42,20 +42,24 @@ class NotesArea extends Component {
         return (
             <Notes>
                 <Ul>
+                    <button onClick={()=>{store.dispatch({type:'sendNote',user:'Ello',note:{label:true,title:'sss',text:'sdadsa'}})}}>add</button>
                     {store.getState().folders.map((el) => {
                         
                         if(el.folderName === store.getState().folder){
-                            return el.Notes.map((el) => (
+                            return el.Notes.map((el,i) => {
+                                if(el.title.search(this.state.filter)!==-1)
+                                return(
                                 <Li>
-                                    <Note>
+                                    <Note  onClick={()=>{store.dispatch({type:'addLabel',id:i,label:!el.label})}}>
                                     {el.label ? <Label></Label> : null}
 
-                                    <div>{el.title}</div>
+                                    <div>**{el.title}**</div>
                                     <div>{el.text}</div>
+                                    {el.from ? <div>{el.from}</div>:null}
                                     </Note>
-                                </Li>
+                                </Li>)
 
-                            ))
+                            })
                         }
                     })}
                 </Ul>
