@@ -1,48 +1,11 @@
 import mongoose from "mongoose";
 
-
-
-//import '../models/Note';
 import '../models/User';
-//const Note = mongoose.model('Note');
 const User = mongoose.model('User');
 
 export function setUpConnection() {
     mongoose.connect(`mongodb://localhost:27017/Users`);
 }
-
-
-/*
-export function listNotes(id) {
-    return Note.find();
-}
-
-let _id=0;
-export function createNote(data) {
-    //console.log(data);
-    const note = new Note({
-        title: data.title ? data.title : "",
-        text: data.text,
-        createdAt: new Date(),
-        id: _id++,
-        author: data.author,
-        parentFolder: data.parentFolder ? data.parentFolder : "",
-    });
-
-    return note.save((err)=>{
-        console.log("Cannot save note", note);
-    });
-}
-
-export function findNote(id){
-    return Note.findById(id);
-}
-
-export function deleteNote(id) {
-    return Note.findById(id).remove();
-}
-*/
-/////////////////////////////////////////////////////////
 export function findUser(data) {
     var Folders = null;
     return User.find({}, () => { }).then(arr => {
@@ -80,11 +43,14 @@ export function addNote(data) {
     var F = false;
     User.findOne({ Name: data.user }, (err, doc) => {
         if (doc) {
-            let i = doc.Folders.findIndex((f) => {
-                return f.folderName === data.folder;
-            })
-            doc.Folders[i].Notes.push(data.note);
-
+            if (data.note.label)
+                doc.Folders[data.folder].Notes.unshift(data.note);
+            else {
+                let j = doc.Folders[data.folder].Notes.findIndex((el) => {
+                    return !el.label;
+                });
+                doc.Folders[data.folder].Notes.splice(j, 0, data.note);
+            }
             User.update({ Name: data.user }, {
                 Folders: doc.Folders
             }, { "multi": true }, () => { });
@@ -93,14 +59,29 @@ export function addNote(data) {
             F = true;
         }
     })
-   
+
     return new Promise((res, rej) => { res(F) });
 }
+export function deleteNote(data) {
+    var F = false;
+    User.findOne({ Name: data.user }, (err, doc) => {
+        if (doc) {
+            doc.Folders[data.folder].Notes.splice(data.note, 1);
+            User.update({ Name: data.user }, {
+                Folders: doc.Folders
+            }, { "multi": true }, () => { });
+            F = true;
+        }
+    })
+
+    return new Promise((res, rej) => { res(F) });
+}
+
 export function addFolder(data) {
     var F = false;
     User.findOne({ Name: data.user }, (err, doc) => {
         if (doc) {
-            doc.Folders.push({folderName:data.folder,Notes:[]});
+            doc.Folders.unshift({ folderName: data.folder, Notes: [] });
 
             User.update({ Name: data.user }, {
                 Folders: doc.Folders
@@ -108,6 +89,73 @@ export function addFolder(data) {
             F = true;
         }
     })
-   
+
+    return new Promise((res, rej) => { res(F) });
+}
+export function deleteFolder(data) {
+    var F = false;
+    User.findOne({ Name: data.user }, (err, doc) => {
+        if (doc) {
+            doc.Folders.splice(data.folder, 1);
+            User.update({ Name: data.user }, {
+                Folders: doc.Folders
+            }, { "multi": true }, () => { });
+            F = true;
+        }
+    })
+
+    return new Promise((res, rej) => { res(F) });
+}
+export function addLabel(data) {
+    var F = false;
+    User.findOne({ Name: data.user }, (err, doc) => {
+        if (doc) {
+            let ind=0;
+            if (!data.label) {
+                ind = doc.Folders[data.folder].Notes.findIndex((el) => {
+                    return !el.label;
+                });
+                if (ind === -1) {
+                    let d = doc.Folders[data.folder].Notes.splice(data.note, 1)[0];
+                    doc.Folders[data.folder].Notes.push(d);
+                    ind = doc.Folders[data.folder].Notes.length - 1;
+                }
+                else {
+                    doc.Folders[data.folder].Notes.splice(ind - 1, 0, doc.Folders[data.folder].Notes.splice(data.note, 1)[0]);
+                    ind = ind - 1;
+                }
+            }
+            else
+                doc.Folders[data.folder].Notes.unshift(doc.Folders[data.folder].Notes.splice(data.note, 1)[0]);
+            doc.Folders[data.folder].Notes[ind].label = data.label;
+            User.update({ Name: data.user }, {
+                Folders: doc.Folders
+            }, { "multi": true }, () => { });
+            F = true;
+        }
+    })
+    return new Promise((res, rej) => { res(F) });
+}
+export function sendNote(data) {
+    var F = false;
+    User.findOne({ Name: data.rec }, (err, doc) => {
+        if (doc) {
+            let i = doc.Folders.findIndex((el) => {
+                if (el.folderName === 'Inbox')
+                    return true;
+                else
+                    return false;
+            })
+            if (i >= 0) {
+                doc.Folders[i].Notes.unshift(Object.assign(data.note, { from: data.sen }));
+            }
+            else
+                doc.Folders.push({ folderName: 'Inbox', Notes: [Object.assign(data.note, { from: data.sen })] })
+            User.update({ Name: data.rec }, {
+                Folders: doc.Folders
+            }, { "multi": true }, () => { });
+            F = true;
+        }
+    })
     return new Promise((res, rej) => { res(F) });
 }
