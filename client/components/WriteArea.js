@@ -13,21 +13,18 @@ const Write = styled.div`
 `
 
 const Textarea = styled.textarea`
-    width:100%;
-    height:100px;
-    border-radius:7px;
+    width:80%;
+    height:150px;
     resize: none;
-    border: 2px solid rgba(5, 5, 5, .5);
-    background-color: rgba(5,5,136,0.035);
+    border: 2px solid rgba(0, 0, 0, 0.37);
+    border-top:0px;
 `
 const Header = styled.textarea`
-    margin:10px 0px 10px 0px;
+    margin-top:10px;
     height:20px;
-    width:100%;
-    border-radius:7px;
+    width:80%;
     resize: none;
-    border: 2px solid rgba(5, 5, 5, .5);
-    background-color: rgba(5,5,136,0.035);
+    border: 4px solid rgba(0, 0, 0, 0.37);
 `
 const Label = styled.label`  
     font-weight: 650;     

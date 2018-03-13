@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 const Notes = styled.div`
-    margin-top:10px;
+    margin-top:22px;
     margin-left:15%;
     width:70%;
     height:100%;
@@ -10,7 +10,7 @@ const Notes = styled.div`
 const Note = styled.div`
     display:flex;
     flex-direction: column;
-    margin: 10px 10px 10px 10px;
+    margin: 0px 10px 10px 10px;
     width:180px;
     height:200px;
 `
@@ -21,7 +21,7 @@ const Ul = styled.ul`
 `
 const Li = styled.li`
     display: inline-block;
-    margin: 20px;
+    margin: 0px 20px 20px 20px;
     width: fit-content;
     transition: 0.2s;  
 `
@@ -38,7 +38,8 @@ const Title = styled.div`
 const Text = styled.div`
     border: 1px solid rgba(5, 5, 5, .5);
     border-top:0px;
-    height: 180px; 
+    height: 180px;
+    word-wrap:break-word; 
 `
 const Button = styled.button` 
     background-color:white;
@@ -77,7 +78,7 @@ class NotesArea extends Component {
                                     <Li>
                                         <Note>
                                             <Head>
-                                                {el.label ? <Label><input type="checkbox"/>!</Label> : null}
+                                                {el.label ? <Label><input type="checkbox"/></Label> : null}
                                                 <Title>
                                                     {el.title}
                                                 </Title>

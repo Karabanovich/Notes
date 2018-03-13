@@ -20,6 +20,7 @@ const Folds = styled.div`
 `
 const Li = styled.div`
     cursor:pointer;
+    user-select:none; 
     min-height:30px;
     margin:0px 0px 0px 5px;
     display:flex;
@@ -34,7 +35,9 @@ const Li = styled.div`
 
 
 const FolderName = styled.div`
-    height:30px;
+    min-height:30px;
+    user-select:none; 
+    word-wrap:break-word;
 `
 
 const Button = styled.a` 
