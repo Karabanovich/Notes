@@ -55,7 +55,7 @@ const I = styled.i`
 `
 const Img = styled.img`
     position: relative;
-    bottom: 12px;
+    bottom: 10px;
     height: 37px;
     width: 25px;
     opacity: ${(props) => props.op}
