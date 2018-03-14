@@ -11,6 +11,6 @@ const Footer=styled.div`
 `
 export default ()=>{
   return(
-    <Footer>Egor Karabanvocih & Pavel Ramasheuski</Footer>
+    <Footer>Egor Loh & Pavel Ramasheuski</Footer>
   )
 }

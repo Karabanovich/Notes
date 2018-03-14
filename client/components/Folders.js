@@ -26,10 +26,10 @@ const Li = styled.div`
     margin:0px 0px 0px 5px;
     display:flex;
     &:hover {
-        background: rgba(53, 167, 110,0.1);
+        background: #f1f5f4c2;
    } 
    &:active { 
-       background: rgba(33,147,90, 0.2); 
+       background: #f1f5f4; 
    }
 `;
 
@@ -48,15 +48,15 @@ const Button = styled.a`
     text-decoration: none; 
     padding: .8em 1em calc(.8em + 3px); 
     border-radius: 3px; 
-    background: #303f9f; 
-    box-shadow: 0 -3px #374bca inset; 
+    background: #3b787f; 
+    box-shadow: 0 -3px #1b4f52 inset; 
     transition: 0.2s;  
     &:hover {
-        background: #374bca; 
+        background: #4b8890; 
     } 
     &:active { 
-        background: #2e41c2; 
-        box-shadow: 0 3px #2e41c2 inset; 
+        background: #2e5d63; 
+        box-shadow: 0 3px #3b787f inset; 
     }
 `
 const Input = styled.input`
@@ -99,7 +99,7 @@ class Folders extends Component {
                 }
                 <Folds>
                         {store.getState().folders.map((el) => (
-                            <Li clr={store.getState().folder===el.folderName? 'rgba(53, 167, 110,0.1)':'white'}  onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
+                            <Li clr={store.getState().folder===el.folderName? '#f1f5f4':'white'}  onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
                                 <img src={image} width="20px" height="20px" />
                                 <FolderName>{el.folderName}</FolderName>
                             </Li>
