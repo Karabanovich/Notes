@@ -9,6 +9,7 @@ const Write = styled.div`
     display:flex;
     flex-direction:column;
     align-items:center; 
+    display:none;
 `
 
 const Textarea = styled.textarea`
@@ -47,7 +48,7 @@ const Button = styled.a`
     margin-top:20px;
     cursor: pointer;
     user-select:none; 
-    font-weight: 400; 
+    font-weight: 700; 
     color: white; 
     text-decoration: none; 
     padding: .8em 1em calc(.8em + 3px); 
@@ -77,8 +78,8 @@ class WriteArea extends Component {
         return (
             <Write>
                 <Label><input type="checkbox" checked={this.state.label} onClick={(e) => { this.setState({ label: e.target.checked }) }} />Mark as important!</Label>
-                <Header type="text" value={this.state.title} onChange={(e) => { this.setState({ title: e.target.value }) }} />
-                <Textarea type="text" value={this.state.text} onChange={(e) => { this.setState({ text: e.target.value }) }} />
+                <Header type="text" maxLength="23" value={this.state.title} onChange={(e) => { this.setState({ title: e.target.value }) }} />
+                <Textarea type="text" maxLength="184" value={this.state.text} onChange={(e) => { this.setState({ text: e.target.value }) }} />
                 <Button onClick={() => {
                     if (this.state.text) {
                         this.setState({ title: '', text: '', label: false });
