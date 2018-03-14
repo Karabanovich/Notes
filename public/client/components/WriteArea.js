@@ -8,26 +8,23 @@ const Write = styled.div`
     width:15%;
     display:flex;
     flex-direction:column;
-    align-items:center; 
+    align-items:center;
+ 
 `
 
 const Textarea = styled.textarea`
-    border:none;
     width:80%;
     height:150px;
     resize: none;
-    border-radius:2px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    border: 2px solid rgba(0, 0, 0, 0.37);
+    border-top:0px;
 `
 const Header = styled.textarea`
-    border:none;
     margin-top:10px;
     height:20px;
     width:80%;
-    background-color:rgba(0, 0, 0, 0.034);
-    border-radius:2px;    
     resize: none;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    border: 4px solid rgba(0, 0, 0, 0.37);
 `
 const Label = styled.label`  
     font-weight: 650;     
@@ -53,7 +50,7 @@ const Button = styled.a`
     text-decoration: none; 
     padding: .8em 1em calc(.8em + 3px); 
     border-radius: 3px; 
-    background: #303f9f; 
+    background: #4d61e4; 
     box-shadow: 0 -3px #374bca inset; 
     transition: 0.2s;  
     &:hover {

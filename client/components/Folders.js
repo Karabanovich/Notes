@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import image from '../pic/1.jpeg';
+import image from '../pic/book.png';
 
 const Left =styled.div`
     width:15%;
@@ -19,8 +19,8 @@ const Folds = styled.div`
     overflow:auto;
 `
 const Li = styled.div`
-    background:${props => props.clr};
     cursor:pointer;
+    user-select:none; 
     min-height:30px;
     margin:0px 0px 0px 5px;
     display:flex;
@@ -29,13 +29,14 @@ const Li = styled.div`
    } 
    &:active { 
        background: rgba(33,147,90, 0.2); 
-       box-shadow: 0 3px rgba(33,147,90, 0.2) inset; 
    }
 `;
 
 
 const FolderName = styled.div`
-    height:30px;
+    min-height:30px;
+    user-select:none; 
+    word-wrap:break-word;
 `
 
 const Button = styled.a` 
@@ -46,19 +47,19 @@ const Button = styled.a`
     text-decoration: none; 
     padding: .8em 1em calc(.8em + 3px); 
     border-radius: 3px; 
-    background: rgb(64,199,129); 
-    box-shadow: 0 -3px rgb(53,167,110) inset; 
+    background: #303f9f; 
+    box-shadow: 0 -3px #374bca inset; 
     transition: 0.2s;  
     &:hover {
-         background: rgb(53, 167, 110);
+        background: #374bca; 
     } 
     &:active { 
-        background: rgb(33,147,90); 
-        box-shadow: 0 3px rgb(33,147,90) inset; 
+        background: #2e41c2; 
+        box-shadow: 0 3px #2e41c2 inset; 
     }
 `
 const Input = styled.input`
-    margin:10px 0px 20px 0px;   
+    margin:10px 0px 5px 0px;   
     height:30px;
     border-radius:5px;
     resize: none;
@@ -74,14 +75,14 @@ class Folders extends Component {
     componentDidMount() {
         this.props.store.subscribe(() => {
             let a = this.props.store.getState().lastAction;
-            if (this.refs.fldrs&&(a === 'addFolder' || a === 'deleteFolder' || a === 'changeUser'||a==='changeFolder'))
+            if (a === 'addFolder' || a === 'deleteFolder' || a === 'changeUser')
                 this.forceUpdate()
         });
     }
     render() {
         const store = this.props.store;
         return (
-            <Left ref="fldrs">
+            <Left>
                 <Button onClick={() => {
                     if (this.state.f) {
                         this.setState({ f: false });
@@ -97,7 +98,7 @@ class Folders extends Component {
                 }
                 <Folds>
                         {store.getState().folders.map((el) => (
-                            <Li clr={store.getState().folder===el.folderName? 'blue':'white'} onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
+                            <Li onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
                                 <img src={image} width="20px" height="20px" />
                                 <FolderName>{el.folderName}</FolderName>
                             </Li>
