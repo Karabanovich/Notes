@@ -58,10 +58,10 @@ const Img = styled.img`
     bottom: 10px;
     height: 37px;
     width: 25px;
-    opacity: ${(props) => props.op}
+    opacity: ${(props) => props.op === 1 ? 0.8 : 0.1}
     cursor:pointer;
     &:hover {
-       opacity:0.3;
+       opacity:0.4
     }
 
 `
@@ -85,7 +85,7 @@ class NotesArea extends Component {
                                     <Li>
                                         <Note>
                                             <Head>
-                                                <Img op={el.label ? 0.8 : 0.1} src={image} onClick={() => {
+                                                <Img op={el.label ? 1 : 0} src={image} onClick={() => {
                                                     store.dispatch({
                                                         type: 'addLabel', id: i, label: !el.label
                                                     })

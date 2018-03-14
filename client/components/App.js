@@ -7,9 +7,15 @@ import Footer from './Footer';
 import RegForm from './RegForm';
 import Main from './Main';
 import { createStore } from 'redux';
+const initialState = { user: '', folder: 'Main', folders: [{ folderName: 'Main', Notes: [] }], lastAction: '' };
 function reducer(state, action) {
   switch (action.type) {
-    case 'changeUser': return { user: action.user, folder: state.folder, folders: action.folders, lastAction: 'changeUser' };
+    case 'changeUser': {
+      if (action.user)
+        return { user: action.user, folder: state.folder, folders: action.folders, lastAction: 'changeUser' };
+      else
+        return initialState;
+    }
     case 'changeFolder': return { user: state.user, folder: action.folder, folders: state.folders, lastAction: 'changeFolder' };
     case 'addFolder':
       {
@@ -47,7 +53,7 @@ function reducer(state, action) {
           let j = fldrs[i].Notes.findIndex((el) => {
             return !el.label;
           });
-          if(j!==-1)
+          if (j !== -1)
             fldrs[i].Notes.splice(j, 0, action.note);
           else
             fldrs[i].Notes.push(action.note);
@@ -72,23 +78,23 @@ function reducer(state, action) {
         NoteActions.addLabel(state.user, i, j, label);
         let fldrs = state.folders.slice();
         let ind = 0;
-        if (!action.label){
+        if (!action.label) {
           ind = fldrs[i].Notes.findIndex((el) => {
-            return !el.label;       
+            return !el.label;
           });
-          if(ind===-1){
-            let d=fldrs[i].Notes.splice(j,1)[0];
+          if (ind === -1) {
+            let d = fldrs[i].Notes.splice(j, 1)[0];
             fldrs[i].Notes.push(d);
-            ind=fldrs[i].Notes.length-1;
+            ind = fldrs[i].Notes.length - 1;
           }
-          else{
-            fldrs[i].Notes.splice(ind-1,0,fldrs[i].Notes.splice(j,1)[0]);
-            ind=ind-1;
+          else {
+            fldrs[i].Notes.splice(ind - 1, 0, fldrs[i].Notes.splice(j, 1)[0]);
+            ind = ind - 1;
           }
         }
         else
-          fldrs[i].Notes.unshift(fldrs[i].Notes.splice(j,1)[0]);
-        fldrs[i].Notes[ind].label=action.label;
+          fldrs[i].Notes.unshift(fldrs[i].Notes.splice(j, 1)[0]);
+        fldrs[i].Notes[ind].label = action.label;
         return { user: state.user, folder: state.folder, folders: fldrs, lastAction: 'addLabel' };
       }
     case 'sendNote':
@@ -111,7 +117,7 @@ function reducer(state, action) {
     default: return state;
   }
 }
-const initialState = { user: '', folder: 'Main', folders: [{ folderName: 'Main', Notes: [] }], lastAction: '' };
+
 const store = createStore(reducer, initialState);
 class App extends Component {
   constructor(props) {
@@ -120,7 +126,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header />
+        <Switch>
+          <Route path="/" render={props => (<Header store={store} />)} />
+        </Switch>
         <div className="content">
           <Switch>
             <Route path="/Main" render={props => (<Main store={store} />)} />
