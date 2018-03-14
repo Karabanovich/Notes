@@ -19,6 +19,7 @@ const Folds = styled.div`
     overflow:auto;
 `
 const Li = styled.div`
+    background:${props => props.clr};
     cursor:pointer;
     user-select:none; 
     min-height:30px;
@@ -75,14 +76,14 @@ class Folders extends Component {
     componentDidMount() {
         this.props.store.subscribe(() => {
             let a = this.props.store.getState().lastAction;
-            if (a === 'addFolder' || a === 'deleteFolder' || a === 'changeUser')
+            if (this.refs.fldrs&&(a === 'addFolder' || a === 'deleteFolder' || a === 'changeUser'))
                 this.forceUpdate()
         });
     }
     render() {
         const store = this.props.store;
         return (
-            <Left>
+            <Left ref="fldrs">
                 <Button onClick={() => {
                     if (this.state.f) {
                         this.setState({ f: false });
@@ -98,7 +99,7 @@ class Folders extends Component {
                 }
                 <Folds>
                         {store.getState().folders.map((el) => (
-                            <Li onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
+                            <Li clr={store.getState().folder===el.folderName? 'blue':'white'}  onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
                                 <img src={image} width="20px" height="20px" />
                                 <FolderName>{el.folderName}</FolderName>
                             </Li>
