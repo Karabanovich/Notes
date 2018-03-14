@@ -76,7 +76,7 @@ class Folders extends Component {
     componentDidMount() {
         this.props.store.subscribe(() => {
             let a = this.props.store.getState().lastAction;
-            if (this.refs.fldrs&&(a === 'addFolder' || a === 'deleteFolder' || a === 'changeUser'))
+            if (this.refs.fldrs&&(a === 'addFolder' || a === 'deleteFolder' || a === 'changeUser'||a==='changeFolder'))
                 this.forceUpdate()
         });
     }
