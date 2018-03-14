@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import image from '../pic/label.png';
-const Notes = styled.div`
+
+const NotesAndSearch = styled.div`
     margin-top:22px;
     margin-left:200px;
     margin-right:200px;
-    max-width:70%;
+    width:100%;
     height:100%;
+    border:0.5px solid red;
+
+    display:flex;
+    flex-direction:column;
+`
+const Search = styled.input`
+    display:relative;
+    border:1px dashed blue;
+    margin:2px 20px 20px 20px;
 `
 
 const Note = styled.div`
@@ -18,8 +28,8 @@ const Note = styled.div`
     border-radius:2px;
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
 `
-const Ul = styled.div`
-    list-style:none;
+const Notes = styled.div`
+
 `
 
 // width: fit-content; ???
@@ -79,8 +89,9 @@ class NotesArea extends Component {
     render() {
         const store = this.props.store;
         return (
-            <Notes>
-                <Ul>
+            <NotesAndSearch>
+                <Search/>
+                <Notes>
                     {
                         store.getState().folders.map((el) => {
                             if (el.folderName === store.getState().folder) {
@@ -110,9 +121,9 @@ class NotesArea extends Component {
                             }
                         })
                     }
-                </Ul>
+                </Notes>
 
-            </Notes>
+            </NotesAndSearch>
 
         )
     }

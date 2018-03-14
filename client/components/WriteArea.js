@@ -4,7 +4,6 @@ const Write = styled.div`
     position: fixed;
     right:0;
     top:70px;
-    margin-right:10px;
     width:200px;
     display:flex;
     flex-direction:column;
@@ -12,24 +11,26 @@ const Write = styled.div`
     height:calc(100% - 120px);
     border: 0.2px solid black; 
 `
-
+const NoteForm = styled.div`
+    width:80%;
+    margin-top:10px;
+    display:flex;
+    flex-direction:column;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    height:170px;
+    border-radius:2px; 
+`
 const Textarea = styled.textarea`
     border:none;
-    width:80%;
     height:150px;
     resize: none;
-    border-radius:2px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
 `
-const Header = styled.textarea`
+const Title = styled.textarea`
     border:none;
-    margin-top:10px;
+    background-color:#f1f5f4;
     height:20px;
-    width:80%;
-    background-color:rgba(0, 0, 0, 0.034);
-    border-radius:2px;    
     resize: none;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    
 `
 const Label = styled.label`  
     font-weight: 650;     
@@ -46,7 +47,8 @@ const Label = styled.label`
     }
 `
 const Button = styled.a` 
-    margin-top:20px;
+    width:60%;
+    margin-top:10px;
     cursor: pointer;
     user-select:none; 
     font-weight: 700; 
@@ -78,9 +80,11 @@ class WriteArea extends Component {
         const store = this.props.store;
         return (
             <Write>
-                <Label><input type="checkbox" checked={this.state.label} onClick={(e) => { this.setState({ label: e.target.checked }) }} />Mark as important!</Label>
-                <Header type="text" maxLength="23" value={this.state.title} onChange={(e) => { this.setState({ title: e.target.value }) }} />
-                <Textarea type="text" maxLength="184" value={this.state.text} onChange={(e) => { this.setState({ text: e.target.value }) }} />
+                <Label><input type="checkbox" checked={this.state.label} onClick={(e) => { this.setState({ label: e.target.checked }) }} />PRESS TO LABEL</Label>
+                <NoteForm>
+                    <Title type="text" maxLength="23" value={this.state.title} onChange={(e) => { this.setState({ title: e.target.value }) }} />
+                    <Textarea type="text" maxLength="184" value={this.state.text} onChange={(e) => { this.setState({ text: e.target.value }) }} />
+                </NoteForm>
                 <Button onClick={() => {
                     if (this.state.text) {
                         this.setState({ title: '', text: '', label: false });
