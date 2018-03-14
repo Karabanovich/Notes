@@ -1,6 +1,6 @@
 .height{
     height: 100%;
 }
-.bn{
-    color:rgba(0, 0, 0, 0.034);
-} 
+*{
+    font-family: Robot;
+}

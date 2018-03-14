@@ -4,6 +4,7 @@ import image from '../pic/book.png';
 
 const Left =styled.div`
     width:15%;
+    min-width:150px;
     position:fixed;
     top:70px;
     left:0;
@@ -95,7 +96,7 @@ class Folders extends Component {
                         this.setState({ f: true });
                 }}>Add Book</Button>
                 {
-                    this.state.f ? <Input type="text" onChange={(e) => { this.setState({ Name: e.target.value }) }} /> : null
+                    this.state.f ? <Input type="text" maxLength="23" onChange={(e) => { this.setState({ Name: e.target.value }) }} /> : null
                 }
                 <Folds>
                         {store.getState().folders.map((el) => (

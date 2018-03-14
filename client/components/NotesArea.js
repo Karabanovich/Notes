@@ -4,7 +4,7 @@ import image from '../pic/label.png';
 const Notes = styled.div`
     margin-top:22px;
     margin-left:15%;
-    width:70%;
+    max-width:70%;
     height:100%;
 `
 
@@ -21,10 +21,13 @@ const Ul = styled.ul`
     list-style:none;
     width:100%;
 `
+
+// width: fit-content; ???
+
 const Li = styled.li`
     display: inline-block;
     margin: 0px 20px 20px 20px;
-    width: fit-content;
+    
     transition: 0.2s;  
 `
 const Head = styled.div`
