@@ -6,7 +6,7 @@ const Footer=styled.div`
   display: flex;
   justify-content: center;
   align-items:center;
-  border-top: 1px solid black;
+  border-top: 0.5px solid black;
   height: 35px;
 `
 export default ()=>{

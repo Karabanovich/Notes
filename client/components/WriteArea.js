@@ -4,12 +4,13 @@ const Write = styled.div`
     position: fixed;
     right:0;
     top:70px;
-    margin-right:3%;
-    width:15%;
+    margin-right:10px;
+    width:200px;
     display:flex;
     flex-direction:column;
-    align-items:center; 
-    display:none;
+    align-items:center;
+    height:calc(100% - 120px);
+    border: 0.2px solid black; 
 `
 
 const Textarea = styled.textarea`
@@ -32,7 +33,7 @@ const Header = styled.textarea`
 `
 const Label = styled.label`  
     font-weight: 650;     
-    width:100%;
+    width:80%;
     text-align: center;
     cursor:pointer;
     user-select:none; 
@@ -52,7 +53,7 @@ const Button = styled.a`
     color: white; 
     text-decoration: none; 
     padding: .8em 1em calc(.8em + 3px); 
-    border-radius: 3px; 
+    border-radius: 5px; 
     background: #3b787f; 
     box-shadow: 0 -3px #1b4f52 inset; 
     transition: 0.2s;  

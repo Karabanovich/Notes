@@ -3,20 +3,19 @@ import styled from 'styled-components';
 import image from '../pic/book.png';
 
 const Left =styled.div`
-    width:15%;
-    min-width:150px;
+    width:200px;
     position:fixed;
     top:70px;
     left:0;
     display:flex;
     flex-direction:column;
     height:calc(100% - 120px);
+    border: 0.2px solid black;
 `
 const Folds = styled.div`
-    margin-top:10px;
+    margin:10px 10px 0px 10px;
     display:flex;
     flex-direction: column;
-    width:100%;
     overflow:auto;
 `
 const Li = styled.div`
@@ -43,12 +42,13 @@ const FolderName = styled.div`
 
 const Button = styled.a` 
     cursor: pointer;
+    margin:10px 10px 10px 10px;
     user-select:none; 
     font-weight: 700; 
     color: white; 
     text-decoration: none; 
     padding: .8em 1em calc(.8em + 3px); 
-    border-radius: 3px; 
+    border-radius: 5px; 
     background: #3b787f; 
     box-shadow: 0 -3px #1b4f52 inset; 
     transition: 0.2s;  

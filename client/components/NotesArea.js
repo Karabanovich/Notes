@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import image from '../pic/label.png';
 const Notes = styled.div`
     margin-top:22px;
-    margin-left:15%;
+    margin-left:200px;
+    margin-right:200px;
     max-width:70%;
     height:100%;
 `
@@ -17,9 +18,8 @@ const Note = styled.div`
     border-radius:2px;
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
 `
-const Ul = styled.ul`
+const Ul = styled.div`
     list-style:none;
-    width:100%;
 `
 
 // width: fit-content; ???
