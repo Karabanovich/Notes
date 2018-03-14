@@ -30,7 +30,7 @@ const Li = styled.li`
 const Head = styled.div`
     display:flex;
     justify-content:space-between;
-    background-color:rgba(0, 0, 0, 0.034);
+    background-color:#f1f5f4;
     height:30px;
     align-items:center;
     
@@ -46,12 +46,12 @@ const Text = styled.div`
     height: 180px;
     word-wrap:break-word; 
 `
-const Label = styled.label`
-    width:20px;
-`
 const I = styled.i`
     cursor:pointer;
-    color:#303f9f83;
+    color:#266473a3;
+    &:hover {
+        color:#266473;
+    }
 `
 const Img = styled.img`
     position: relative;

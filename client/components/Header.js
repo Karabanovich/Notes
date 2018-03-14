@@ -9,7 +9,7 @@ const Header=styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #303f9f;
+  background: #264a62;
   height: 48px;
   width: 100%;
   color:white;
