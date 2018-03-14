@@ -49,7 +49,10 @@ export function addNote(data) {
                 let j = doc.Folders[data.folder].Notes.findIndex((el) => {
                     return !el.label;
                 });
-                doc.Folders[data.folder].Notes.splice(j, 0, data.note);
+                if(j!==-1)
+                    doc.Folders[data.folder].Notes.splice(j, 0, data.note);
+                else
+                    doc.Folders[data.folder].Notes.push(data.note);
             }
             User.update({ Name: data.user }, {
                 Folders: doc.Folders

@@ -99,7 +99,7 @@ class Folders extends Component {
                 }
                 <Folds>
                         {store.getState().folders.map((el) => (
-                            <Li clr={store.getState().folder===el.folderName? 'blue':'white'}  onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
+                            <Li clr={store.getState().folder===el.folderName? 'rgba(53, 167, 110,0.1)':'white'}  onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
                                 <img src={image} width="20px" height="20px" />
                                 <FolderName>{el.folderName}</FolderName>
                             </Li>

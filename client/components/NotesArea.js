@@ -31,6 +31,8 @@ const Head = styled.div`
     display:flex;
     justify-content:space-between;
     background-color:rgba(0, 0, 0, 0.034);
+    height:30px;
+    align-items:center;
     
 `
 const Title = styled.div`
@@ -51,15 +53,22 @@ const I = styled.i`
     cursor:pointer;
     color:#303f9f83;
 `
-const Img =styled.img`
+const Img = styled.img`
     position: relative;
-    bottom:20px;
-    opacity:0.5;
+    bottom: 12px;
+    height: 37px;
+    width: 25px;
+    opacity: ${(props) => props.op}
+    cursor:pointer;
+    &:hover {
+       opacity:0.3;
+    }
+
 `
 class NotesArea extends Component {
     constructor(props) {
         super(props);
-        this.state = { filter: ''};
+        this.state = { filter: '' };
     }
     componentDidMount() {
         this.props.store.subscribe(() => this.forceUpdate());
@@ -71,17 +80,24 @@ class NotesArea extends Component {
                 <Ul>
                     {
                         store.getState().folders.map((el) => {
-
                             if (el.folderName === store.getState().folder) {
-                                return el.Notes.map((el) => (
+                                return el.Notes.map((el, i) => (
                                     <Li>
                                         <Note>
                                             <Head>
-                                                {el.label ? <Img src={image} width="20px" height="25px"/> : null}
+                                                <Img op={el.label ? 0.8 : 0.1} src={image} onClick={() => {
+                                                    store.dispatch({
+                                                        type: 'addLabel', id: i, label: !el.label
+                                                    })
+                                                }} />
                                                 <Title>
                                                     {el.title}
                                                 </Title>
-                                                <I className="material-icons">delete</I>
+                                                <I className="material-icons" onClick={() => {
+                                                    store.dispatch({
+                                                        type: 'deleteNote', id: i
+                                                    })
+                                                }}>delete</I>
                                             </Head>
                                             <Text>{el.text}</Text>
                                         </Note>

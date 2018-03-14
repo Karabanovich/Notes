@@ -47,7 +47,10 @@ function reducer(state, action) {
           let j = fldrs[i].Notes.findIndex((el) => {
             return !el.label;
           });
-          fldrs[i].Notes.splice(j, 0, action.note);
+          if(j!==-1)
+            fldrs[i].Notes.splice(j, 0, action.note);
+          else
+            fldrs[i].Notes.push(action.note);
         }
 
         return { user: state.user, folder: state.folder, folders: fldrs, lastAction: 'addNote' };
