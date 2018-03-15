@@ -7,23 +7,23 @@ import Footer from './Footer';
 import RegForm from './RegForm';
 import Main from './Main';
 import { createStore } from 'redux';
-const initialState = { user: '', folder: 'Main', folders: [{ folderName: 'Main', Notes: [] }], lastAction: '' };
+const initialState = { user: '', folder: 'Main', folders: [{ folderName: 'Main', Notes: [] }], lastAction: '', books: true, isMobile: false };
 function reducer(state, action) {
   switch (action.type) {
     case 'changeUser': {
       if (action.user)
-        return { user: action.user, folder: state.folder, folders: action.folders, lastAction: 'changeUser' };
+        return { user: action.user, folder: state.folder, folders: action.folders, lastAction: 'changeUser', books: state.books, isMobile: state.isMobile };
       else
         return initialState;
     }
-    case 'changeFolder': return { user: state.user, folder: action.folder, folders: state.folders, lastAction: 'changeFolder' };
+    case 'changeFolder': return { user: state.user, folder: action.folder, folders: state.folders, lastAction: 'changeFolder', books: state.books, isMobile: state.isMobile };
     case 'addFolder':
       {
         if (!state.folders.find((el) => { return el.folderName === action.folder.folderName })) {
           NoteActions.addFolder(state.user, action.folder.folderName);
           let fldrs = state.folders.slice();
           fldrs.unshift(action.folder);
-          return { user: state.user, folder: action.folder.folderName, folders: fldrs, lastAction: 'addFolder' };
+          return { user: state.user, folder: action.folder.folderName, folders: fldrs, lastAction: 'addFolder', books: state.books, isMobile: state.isMobile };
         }
         else
           return state;
@@ -36,7 +36,14 @@ function reducer(state, action) {
           let fld = state.folder;
           if (action.folder === state.folder)
             fld = 'Main';
-          return { user: state.user, folder: fld, folders: state.folders.slice(0, i).concat(state.folders.slice(i + 1)), lastAction: 'deleteFolder' };
+          return {
+            user: state.user,
+            folder: fld,
+            folders: state.folders.slice(0, i).concat(state.folders.slice(i + 1)),
+            lastAction: 'deleteFolder',
+            books: state.books,
+            isMobile: state.isMobile
+          };
         }
         else
           return state;
@@ -59,7 +66,7 @@ function reducer(state, action) {
             fldrs[i].Notes.push(action.note);
         }
 
-        return { user: state.user, folder: state.folder, folders: fldrs, lastAction: 'addNote' };
+        return { user: state.user, folder: state.folder, folders: fldrs, lastAction: 'addNote', books: state.books, isMobile: state.isMobile };
       }
     case 'deleteNote':
       {
@@ -68,7 +75,7 @@ function reducer(state, action) {
         NoteActions.deleteNote(state.user, i, j);
         let fldrs = state.folders.slice();
         fldrs[i].Notes.splice(j, 1);
-        return { user: state.user, folder: state.folder, folders: fldrs, lastAction: 'deleteNote' };
+        return { user: state.user, folder: state.folder, folders: fldrs, lastAction: 'deleteNote', books: state.books, isMobile: state.isMobile };
       }
     case 'addLabel':
       {
@@ -95,7 +102,7 @@ function reducer(state, action) {
         else
           fldrs[i].Notes.unshift(fldrs[i].Notes.splice(j, 1)[0]);
         fldrs[i].Notes[ind].label = action.label;
-        return { user: state.user, folder: state.folder, folders: fldrs, lastAction: 'addLabel' };
+        return { user: state.user, folder: state.folder, folders: fldrs, lastAction: 'addLabel', books: state.books, isMobile: state.isMobile };
       }
     case 'sendNote':
       {
@@ -106,13 +113,23 @@ function reducer(state, action) {
               user: state.user,
               folder: state.folder,
               folders: state.folders.concat({ folderName: 'Inbox', Notes: [Object.assign(action.note, { from: state.user })] }),
-              lastAction: 'sendNote'
+              lastAction: 'sendNote',
+              books: state.books,
+              isMobile: state.isMobile
             };
           let fldrs = state.folders.slice();
           fldrs[fldrs.length - 1].Notes.push(Object.assign(action.note, { from: state.user }));
-          return { user: state.user, folder: state.folder, folders: fldrs, lastAction: 'sendNote' };
+          return { user: state.user, folder: state.folder, folders: fldrs, lastAction: 'sendNote', books: state.books, isMobile: state.isMobile };
         }
         return state;
+      }
+    case 'dispBooks':
+      {
+        return { user: state.user, folder: state.folder, folders: state.folders, lastAction: 'dispBooks', books: action.disp, isMobile: state.isMobile };
+      }
+    case 'mobile':
+      {
+        return { user: state.user, folder: state.folder, folders: state.folders, lastAction: 'mobile', books: state.books, isMobile: !state.isMobile }
       }
     default: return state;
   }
@@ -122,6 +139,34 @@ const store = createStore(reducer, initialState);
 class App extends Component {
   constructor(props) {
     super(props);
+    this.state = { isMobile: window.innerWidth < 500 };
+    if (this.state.isMobile) {
+      store.dispatch({ type: 'mobile' });
+      store.dispatch({ type: 'dispBooks', disp: false });
+    }
+    this.handleWindowSizeChange = this.handleWindowSizeChange.bind(this);
+  }
+  componentWillMount() {
+    window.addEventListener('resize', this.handleWindowSizeChange);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowSizeChange);
+  }
+  handleWindowSizeChange() {
+    let f = this.state.isMobile;
+    if (window.innerWidth < 500)
+      this.setState({ isMobile: true });
+    else
+      this.setState({ isMobile: false });
+    if (f !== this.state.isMobile) {
+      store.dispatch({ type: 'mobile' })
+      if (this.state.isMobile)
+        store.dispatch({ type: 'dispBooks', disp: false })
+      else
+        store.dispatch({ type: 'dispBooks', disp: true })
+    }
+
+
   }
   render() {
     return (

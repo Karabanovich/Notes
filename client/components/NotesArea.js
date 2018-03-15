@@ -4,7 +4,7 @@ import image from '../pic/label.png';
 import WriteArea from './WriteArea';
 
 const NotesAndSearch = styled.div`
-    margin-left:200px;
+    margin-left:${props=>props.isMobile?'0':'200px'};
     height:100%;
     width:100%;
     border:0.5px dashed black;
@@ -45,6 +45,7 @@ const Note = styled.div`
 `
 const Notes = styled.div`
     margin-top:15px;
+    text-align:center;
 `
 
 // width: fit-content; ???
@@ -104,7 +105,7 @@ class NotesArea extends Component {
     render() {
         const store = this.props.store;
         return (
-            <NotesAndSearch>
+            <NotesAndSearch isMobile={store.getState().isMobile}>
                 <SearchBox>
                     <SearchIcon className="material-icons">search</SearchIcon>
                     <Search onChange={(e) => {
