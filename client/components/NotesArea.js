@@ -3,22 +3,37 @@ import styled from 'styled-components';
 import image from '../pic/label.png';
 
 const NotesAndSearch = styled.div`
-    margin-top:22px;
     margin-left:200px;
     margin-right:200px;
-    width:100%;
     height:100%;
-    border:0.5px solid red;
+    width:100%;
+    border:0.5px dashed black;
 
     display:flex;
     flex-direction:column;
 `
-const Search = styled.input`
-    display:relative;
-    border:1px dashed blue;
-    margin:2px 20px 20px 20px;
+const SearchBox = styled.div`
+    position:sticky;
+    display:flex;
+    align-items:center;
+    left:200px;
+    right:200px;
+    top:48px;
+    height:35px;
+    z-index:1;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    background-color:white;
+    border: 1px solid white;
 `
+const SearchIcon = styled.i`
+`
+const Search = styled.input`
+    margin: 3px 20px 3px 0px;
+    width:100%;
+    border:0.4px solid black;
+    border-radius:15px;
 
+`
 const Note = styled.div`
     display:flex;
     flex-direction: column;
@@ -29,7 +44,7 @@ const Note = styled.div`
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
 `
 const Notes = styled.div`
-
+    margin-top:10px;
 `
 
 // width: fit-content; ???
@@ -59,7 +74,7 @@ const Text = styled.div`
     height: 180px;
     word-wrap:break-word; 
 `
-const I = styled.i`
+const DelIcon = styled.i`
     cursor:pointer;
     color:#266473a3;
     &:hover {
@@ -90,7 +105,10 @@ class NotesArea extends Component {
         const store = this.props.store;
         return (
             <NotesAndSearch>
-                <Search/>
+                <SearchBox>
+                <SearchIcon className="material-icons">search</SearchIcon>
+                    <Search />
+                </SearchBox>
                 <Notes>
                     {
                         store.getState().folders.map((el) => {
@@ -107,11 +125,11 @@ class NotesArea extends Component {
                                                 <Title>
                                                     {el.title}
                                                 </Title>
-                                                <I className="material-icons" onClick={() => {
+                                                <DelIcon className="material-icons" onClick={() => {
                                                     store.dispatch({
                                                         type: 'deleteNote', id: i
                                                     })
-                                                }}>delete</I>
+                                                }}>delete</DelIcon>
                                             </Head>
                                             <Text>{el.text}</Text>
                                         </Note>

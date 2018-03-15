@@ -3,13 +3,12 @@ import styled from 'styled-components';
 const Write = styled.div`
     position: fixed;
     right:0;
-    top:70px;
     width:200px;
     display:flex;
     flex-direction:column;
     align-items:center;
-    height:calc(100% - 120px);
-    border: 0.2px solid black; 
+    background-color:#fafafa;
+    height:calc(100% - 48px);
 `
 const NoteForm = styled.div`
     width:80%;

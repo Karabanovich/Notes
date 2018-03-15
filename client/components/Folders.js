@@ -5,31 +5,33 @@ import image from '../pic/book.png';
 const Left =styled.div`
     width:200px;
     position:fixed;
-    top:70px;
     left:0;
+    z-index:2;
     display:flex;
+    background-color:#fafafa;
     flex-direction:column;
-    height:calc(100% - 120px);
-    border: 0.2px solid black;
+    height:calc(100% - 48px);
 `
 const Folds = styled.div`
-    margin:10px 10px 0px 10px;
+    margin:10px 10px 35px 10px;
     display:flex;
+    
     flex-direction: column;
     overflow:auto;
 `
 const Li = styled.div`
     background:${props => props.clr};
+    background-color:#fafafa;
     cursor:pointer;
     user-select:none; 
     min-height:30px;
     margin:0px 0px 0px 5px;
     display:flex;
     &:hover {
-        background: #f1f5f4c2;
+        background:rgb(255,255,255);
    } 
    &:active { 
-       background: #f1f5f4; 
+       background: rgb(255,255,255); 
    }
 `;
 
@@ -100,7 +102,7 @@ class Folders extends Component {
                 }
                 <Folds>
                         {store.getState().folders.map((el) => (
-                            <Li clr={store.getState().folder===el.folderName? '#f1f5f4':'white'}  onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
+                            <Li clr={store.getState().folder===el.folderName?'rgb(255,255,255)': '#fafafa'}  onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
                                 <img src={image} width="20px" height="20px" />
                                 <FolderName>{el.folderName}</FolderName>
                             </Li>
