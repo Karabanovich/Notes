@@ -15,7 +15,6 @@ export default (props) => {
         <Main>
             <Folders store={props.store} />
             <NotesArea store={props.store} />
-            <WriteArea store={props.store} />
         </Main>
 
     )

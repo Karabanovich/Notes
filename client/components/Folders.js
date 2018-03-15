@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import image from '../pic/book.png';
 
-const Left =styled.div`
+const Left = styled.div`
     width:200px;
     position:fixed;
     left:0;
@@ -15,13 +15,13 @@ const Left =styled.div`
 const Folds = styled.div`
     margin:10px 10px 35px 10px;
     display:flex;
-    
+    background:#fafafa;
     flex-direction: column;
     overflow:auto;
 `
 const Li = styled.div`
     background:${props => props.clr};
-    background-color:#fafafa;
+    position:relative;
     cursor:pointer;
     user-select:none; 
     min-height:30px;
@@ -70,16 +70,64 @@ const Input = styled.input`
     border: 2px solid rgba(5, 5, 5, .5);
     background-color: rgba(5,5,136,0.035);
 `
-
+const DelIcon = styled.i`
+    position:absolute;
+    right:5px;
+    top:3px;
+    cursor:pointer;
+    color:#266473a3;
+    &:hover {
+        color:#266473;
+    }
+`
+const Popup = styled.div`
+    width:100%;
+    min-height:100%;
+    background-color: rgba(0,0,0,0.5);
+    overflow:hidden;
+    position:fixed;
+    top:0px;
+`
+const PopupCont = styled.div`
+    margin:300px auto 0px auto;
+    width:200px;
+    padding:5px;
+    background-color: #c5c5c5;
+    border-radius:5px;
+    box-shadow: 0px 0px 10px #000;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+`
+const DelButton = styled.a` 
+    height:10px;
+    cursor: pointer;
+    user-select:none; 
+    font-weight: 700; 
+    color: white; 
+    text-decoration: none; 
+    padding: .8em 1em calc(.8em + 3px); 
+    border-radius: 5px; 
+    background: red; 
+    box-shadow: 0 -3px #1b4f52 inset; 
+    transition: 0.2s;  
+    &:hover {
+        background: #4b8890; 
+    } 
+    &:active { 
+        background: #2e5d63; 
+        box-shadow: 0 3px #3b787f inset; 
+    }
+`
 class Folders extends Component {
     constructor(props) {
         super(props);
-        this.state = { Name: '', f: false };
+        this.state = { Name: '', f: false, del: false };
     }
     componentDidMount() {
         this.props.store.subscribe(() => {
             let a = this.props.store.getState().lastAction;
-            if (this.refs.fldrs&&(a === 'addFolder' || a === 'deleteFolder' || a === 'changeUser'||a==='changeFolder'))
+            if (this.refs.fldrs && (a === 'addFolder' || a === 'deleteFolder' || a === 'changeUser' || a === 'changeFolder'))
                 this.forceUpdate()
         });
     }
@@ -101,16 +149,41 @@ class Folders extends Component {
                     this.state.f ? <Input type="text" maxLength="23" onChange={(e) => { this.setState({ Name: e.target.value }) }} /> : null
                 }
                 <Folds>
-                        {store.getState().folders.map((el) => (
-                            <Li clr={store.getState().folder===el.folderName?'rgb(255,255,255)': '#fafafa'}  onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
-                                <img src={image} width="20px" height="20px" />
-                                <FolderName>{el.folderName}</FolderName>
-                            </Li>
-                        ))}
+                    {store.getState().folders.map((el) => (
+                        <Li clr={store.getState().folder === el.folderName ? 'rgb(255,255,255)' : '#fafafa'} onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
+                            <img src={image} width="20px" height="20px" />
+                            <FolderName>{el.folderName}</FolderName>
+                            {store.getState().folder === el.folderName && el.folderName !== 'Main' ?
+                                <DelIcon className="material-icons" onClick={() => {
+                                    this.setState({ del: true });
+                                }}>cancel</DelIcon>
+                                : null
+                            }
+                        </Li>
+                    ))}
                 </Folds>
+                {
+                    this.state.del ?
+                        <Popup id='Popup' onClick={(e) => {
+                            if (e.target.id === 'Popup')
+                                this.setState({ del: false });
+                        }}>
+                            <PopupCont >
+                                <div>Are you sure you want to delete the folder?</div>
+                                    <DelButton onClick={() => {
+                                        store.dispatch({
+                                            type: 'deleteFolder', folder: store.getState().folder
+                                        });
+                                        this.setState({ del: false });
+                                    }}>
+                                        Yes</DelButton>
+                            </PopupCont>
+                        </Popup>
+                                : null
+                        }
             </Left>
 
-        )
-    }
-}
-export default Folders;
+                            )
+                        }
+                    }
+                    export default Folders;

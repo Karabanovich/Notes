@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import image from '../pic/label.png';
 const Write = styled.div`
-    position: fixed;
-    right:0;
+
     width:200px;
-    display:flex;
+    display:inline-block;
     flex-direction:column;
     align-items:center;
     background-color:#fafafa;
@@ -66,7 +66,48 @@ const Button = styled.a`
         box-shadow: 0 3px #3b787f inset; 
     }
 `
+const Li = styled.li`
+    display: inline-block;
+    margin: 0px 20px 20px 20px;
+    
+    transition: 0.2s;  
+`
+const Head = styled.div`
+    display:flex;
+    justify-content:space-between;
+    background-color:#f1f5f4;
+    height:30px;
+    align-items:center;
+    
+`
+const Note = styled.div`
+    display:flex;
+    flex-direction: column;
+    margin: 0px 10px 10px 10px;
+    width:180px;
+    height:200px;
+    border-radius:2px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+`
+const Img = styled.img`
+    position: relative;
+    bottom: 10px;
+    height: 37px;
+    width: 25px;
+    opacity: ${(props) => props.op === 1 ? 0.8 : 0.1}
+    cursor:pointer;
+    &:hover {
+       opacity:0.4;
+    }
 
+`
+const AddIcon = styled.i`
+    cursor:pointer;
+    color:#266473a3;
+    &:hover {
+        color:#266473;
+    }
+`
 class WriteArea extends Component {
     constructor(props) {
         super(props);
@@ -78,26 +119,34 @@ class WriteArea extends Component {
     render() {
         const store = this.props.store;
         return (
-            <Write>
-                <Label><input type="checkbox" checked={this.state.label} onClick={(e) => { this.setState({ label: e.target.checked }) }} />PRESS TO LABEL</Label>
-                <NoteForm>
-                    <Title type="text" maxLength="23" value={this.state.title} onChange={(e) => { this.setState({ title: e.target.value }) }} />
-                    <Textarea type="text" maxLength="184" value={this.state.text} onChange={(e) => { this.setState({ text: e.target.value }) }} />
-                </NoteForm>
-                <Button onClick={() => {
-                    if (this.state.text) {
-                        this.setState({ title: '', text: '', label: false });
-                        store.dispatch({
-                            type: 'addNote',
-                            note: {
-                                title: this.state.title,
-                                text: this.state.text,
-                                label: this.state.label
+            <Li>
+                <Note>
+                    <Head>
+                        <Img op={this.state.label ? 1 : 0} src={image} onClick={() => {
+                            this.setState({ label: !this.state.label });
+                        }} />
+                        <Title value={this.state.title} onChange={(e) => {
+                            this.setState({ title: e.target.value });
+                        }}></Title>
+                        <AddIcon className="material-icons" onClick={() => {
+                            if (this.state.text && this.state.title) {
+                                this.setState({ title: '', text: '', label: false });
+                                store.dispatch({
+                                    type: 'addNote',
+                                    note: {
+                                        title: this.state.title,
+                                        text: this.state.text,
+                                        label: this.state.label
+                                    }
+                                });
                             }
-                        });
-                    }
-                }}>Add Note</Button>
-            </Write>
+                        }}>note_add</AddIcon>
+                    </Head>
+                    <Textarea value={this.state.text} onChange={(e) => {
+                        this.setState({ text: e.target.value });
+                    }}></Textarea>
+                </Note>
+            </Li>
 
         )
     }

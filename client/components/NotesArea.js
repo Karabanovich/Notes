@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import image from '../pic/label.png';
+import WriteArea from './WriteArea';
 
 const NotesAndSearch = styled.div`
     margin-left:200px;
-    margin-right:200px;
     height:100%;
     width:100%;
     border:0.5px dashed black;
@@ -44,7 +44,7 @@ const Note = styled.div`
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
 `
 const Notes = styled.div`
-    margin-top:10px;
+    margin-top:15px;
 `
 
 // width: fit-content; ???
@@ -106,36 +106,42 @@ class NotesArea extends Component {
         return (
             <NotesAndSearch>
                 <SearchBox>
-                <SearchIcon className="material-icons">search</SearchIcon>
-                    <Search />
+                    <SearchIcon className="material-icons">search</SearchIcon>
+                    <Search onChange={(e) => {
+                        this.setState({ filter: e.target.value });
+                    }} />
                 </SearchBox>
                 <Notes>
+                    <WriteArea store={this.props.store} />
                     {
                         store.getState().folders.map((el) => {
                             if (el.folderName === store.getState().folder) {
-                                return el.Notes.map((el, i) => (
-                                    <Li>
-                                        <Note>
-                                            <Head>
-                                                <Img op={el.label ? 1 : 0} src={image} onClick={() => {
-                                                    store.dispatch({
-                                                        type: 'addLabel', id: i, label: !el.label
-                                                    })
-                                                }} />
-                                                <Title>
-                                                    {el.title}
-                                                </Title>
-                                                <DelIcon className="material-icons" onClick={() => {
-                                                    store.dispatch({
-                                                        type: 'deleteNote', id: i
-                                                    })
-                                                }}>delete</DelIcon>
-                                            </Head>
-                                            <Text>{el.text}</Text>
-                                        </Note>
-                                    </Li>
+                                return el.Notes.map((el, i) => {
+                                    if (el.title.search(this.state.filter) !== -1)
+                                        return (
+                                            <Li>
+                                                <Note>
+                                                    <Head>
+                                                        <Img op={el.label ? 1 : 0} src={image} onClick={() => {
+                                                            store.dispatch({
+                                                                type: 'addLabel', id: i, label: !el.label
+                                                            })
+                                                        }} />
+                                                        <Title>
+                                                            {el.title}
+                                                        </Title>
+                                                        <DelIcon className="material-icons" onClick={() => {
+                                                            store.dispatch({
+                                                                type: 'deleteNote', id: i
+                                                            })
+                                                        }}>delete</DelIcon>
+                                                    </Head>
+                                                    <Text>{el.text}</Text>
+                                                </Note>
+                                            </Li>
 
-                                ))
+                                        )
+                                })
                             }
                         })
                     }
