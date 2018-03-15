@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import image from '../pic/label.png';
 const Write = styled.div`
-
     width:200px;
     display:inline-block;
     flex-direction:column;
@@ -125,7 +124,7 @@ class WriteArea extends Component {
                         <Img op={this.state.label ? 1 : 0} src={image} onClick={() => {
                             this.setState({ label: !this.state.label });
                         }} />
-                        <Title value={this.state.title} onChange={(e) => {
+                        <Title placeholder="Title" value={this.state.title} onChange={(e) => {
                             this.setState({ title: e.target.value });
                         }}></Title>
                         <AddIcon className="material-icons" onClick={() => {
@@ -142,7 +141,7 @@ class WriteArea extends Component {
                             }
                         }}>note_add</AddIcon>
                     </Head>
-                    <Textarea value={this.state.text} onChange={(e) => {
+                    <Textarea placeholder="Text" value={this.state.text} onChange={(e) => {
                         this.setState({ text: e.target.value });
                     }}></Textarea>
                 </Note>
