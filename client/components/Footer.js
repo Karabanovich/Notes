@@ -6,11 +6,13 @@ const Footer=styled.div`
   display: flex;
   justify-content: center;
   align-items:center;
-  border-top: 1px solid black;
+  border-top: 0.5px solid black;
   height: 35px;
+  background-color:white;
+  z-index:4;
 `
 export default ()=>{
   return(
-    <Footer>Egor Karabanvocich & Pavel Ramasheuski</Footer>
+    <Footer>Egor Karabanovich & Pavel Ramasheuski</Footer>
   )
 }

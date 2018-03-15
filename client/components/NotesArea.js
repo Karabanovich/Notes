@@ -1,13 +1,39 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import image from '../pic/label.png';
-const Notes = styled.div`
-    margin-top:22px;
-    margin-left:15%;
-    max-width:70%;
-    height:100%;
-`
 
+const NotesAndSearch = styled.div`
+    margin-left:200px;
+    margin-right:200px;
+    height:100%;
+    width:100%;
+    border:0.5px dashed black;
+
+    display:flex;
+    flex-direction:column;
+`
+const SearchBox = styled.div`
+    position:sticky;
+    display:flex;
+    align-items:center;
+    left:200px;
+    right:200px;
+    top:48px;
+    height:35px;
+    z-index:1;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    background-color:white;
+    border: 1px solid white;
+`
+const SearchIcon = styled.i`
+`
+const Search = styled.input`
+    margin: 3px 20px 3px 0px;
+    width:100%;
+    border:0.4px solid black;
+    border-radius:15px;
+
+`
 const Note = styled.div`
     display:flex;
     flex-direction: column;
@@ -17,9 +43,8 @@ const Note = styled.div`
     border-radius:2px;
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
 `
-const Ul = styled.ul`
-    list-style:none;
-    width:100%;
+const Notes = styled.div`
+    margin-top:10px;
 `
 
 // width: fit-content; ???
@@ -49,7 +74,7 @@ const Text = styled.div`
     height: 180px;
     word-wrap:break-word; 
 `
-const I = styled.i`
+const DelIcon = styled.i`
     cursor:pointer;
     color:#266473a3;
     &:hover {
@@ -79,8 +104,12 @@ class NotesArea extends Component {
     render() {
         const store = this.props.store;
         return (
-            <Notes>
-                <Ul>
+            <NotesAndSearch>
+                <SearchBox>
+                <SearchIcon className="material-icons">search</SearchIcon>
+                    <Search />
+                </SearchBox>
+                <Notes>
                     {
                         store.getState().folders.map((el) => {
                             if (el.folderName === store.getState().folder) {
@@ -96,11 +125,11 @@ class NotesArea extends Component {
                                                 <Title>
                                                     {el.title}
                                                 </Title>
-                                                <I className="material-icons" onClick={() => {
+                                                <DelIcon className="material-icons" onClick={() => {
                                                     store.dispatch({
                                                         type: 'deleteNote', id: i
                                                     })
-                                                }}>delete</I>
+                                                }}>delete</DelIcon>
                                             </Head>
                                             <Text>{el.text}</Text>
                                         </Note>
@@ -110,9 +139,9 @@ class NotesArea extends Component {
                             }
                         })
                     }
-                </Ul>
+                </Notes>
 
-            </Notes>
+            </NotesAndSearch>
 
         )
     }
