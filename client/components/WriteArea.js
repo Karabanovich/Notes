@@ -8,8 +8,7 @@ const Write = styled.div`
     width:15%;
     display:flex;
     flex-direction:column;
-    align-items:center; 
-    display:none;
+    align-items:center;
 `
 
 const Textarea = styled.textarea`
