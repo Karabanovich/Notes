@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import WriteArea from './WriteArea';
 import NotesArea from './NotesArea';
 import Folders from './Folders';
 const Main = styled.div`

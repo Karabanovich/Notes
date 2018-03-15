@@ -7,8 +7,6 @@ const NotesAndSearch = styled.div`
     margin-left:200px;
     height:100%;
     width:100%;
-    border:0.5px dashed black;
-
     display:flex;
     flex-direction:column;
 `
@@ -16,23 +14,21 @@ const SearchBox = styled.div`
     position:sticky;
     display:flex;
     align-items:center;
-    left:200px;
-    right:200px;
     top:48px;
-    height:35px;
+    height:48px;
     z-index:1;
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
     background-color:white;
     border: 1px solid white;
 `
 const SearchIcon = styled.i`
+    margin-left:20px;
+    color: #00000069;
 `
 const Search = styled.input`
+    border:none;
     margin: 3px 20px 3px 0px;
     width:100%;
-    border:0.4px solid black;
-    border-radius:15px;
-
 `
 const Note = styled.div`
     display:flex;
@@ -107,7 +103,7 @@ class NotesArea extends Component {
             <NotesAndSearch>
                 <SearchBox>
                     <SearchIcon className="material-icons">search</SearchIcon>
-                    <Search onChange={(e) => {
+                    <Search placeholder="Search" onChange={(e) => {
                         this.setState({ filter: e.target.value });
                     }} />
                 </SearchBox>

@@ -45,11 +45,12 @@ const FolderName = styled.div`
 const Button = styled.a` 
     cursor: pointer;
     margin:10px 10px 10px 10px;
+    height:20px;
     user-select:none; 
     font-weight: 700; 
     color: white; 
     text-decoration: none; 
-    padding: .8em 1em calc(.8em + 3px); 
+    padding: .4em 1em calc(.4em + 1px); 
     border-radius: 5px; 
     background: #3b787f; 
     box-shadow: 0 -3px #1b4f52 inset; 
@@ -63,12 +64,14 @@ const Button = styled.a`
     }
 `
 const Input = styled.input`
-    margin:10px 0px 5px 0px;   
+    margin:0px 10px 0px 10px;   
+    padding-left:1em;
     height:30px;
-    border-radius:5px;
     resize: none;
-    border: 2px solid rgba(5, 5, 5, .5);
-    background-color: rgba(5,5,136,0.035);
+    border:none;
+    border-radius: 5px; 
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    background-color: white;
 `
 const DelIcon = styled.i`
     position:absolute;
@@ -99,6 +102,9 @@ const PopupCont = styled.div`
     flex-direction:column;
     align-items:center;
 `
+const DeleteText = styled.div`
+    text-align:center;
+`
 const DelButton = styled.a` 
     height:10px;
     cursor: pointer;
@@ -106,17 +112,17 @@ const DelButton = styled.a`
     font-weight: 700; 
     color: white; 
     text-decoration: none; 
-    padding: .8em 1em calc(.8em + 3px); 
+    padding: .1em 1em calc(.8em + 3px); 
     border-radius: 5px; 
-    background: red; 
-    box-shadow: 0 -3px #1b4f52 inset; 
+    background: #701919;
+    box-shadow: 0 -3px #0e0404 inset;
     transition: 0.2s;  
     &:hover {
-        background: #4b8890; 
+        background: #a83535; 
     } 
     &:active { 
-        background: #2e5d63; 
-        box-shadow: 0 3px #3b787f inset; 
+        background: #701919; 
+        box-shadow: 0 3px #a83535 inset; 
     }
 `
 class Folders extends Component {
@@ -146,7 +152,7 @@ class Folders extends Component {
                         this.setState({ f: true });
                 }}>Add Book</Button>
                 {
-                    this.state.f ? <Input type="text" maxLength="23" onChange={(e) => { this.setState({ Name: e.target.value }) }} /> : null
+                    this.state.f ? <Input placeholder="Book name" type="text" maxLength="23" onChange={(e) => { this.setState({ Name: e.target.value }) }} /> : null
                 }
                 <Folds>
                     {store.getState().folders.map((el) => (
@@ -169,7 +175,7 @@ class Folders extends Component {
                                 this.setState({ del: false });
                         }}>
                             <PopupCont >
-                                <div>Are you sure you want to delete the folder?</div>
+                                <DeleteText>Are you sure you want to delete this Book?</DeleteText>
                                     <DelButton onClick={() => {
                                         store.dispatch({
                                             type: 'deleteFolder', folder: store.getState().folder
