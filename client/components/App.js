@@ -12,9 +12,9 @@ function reducer(state, action) {
   switch (action.type) {
     case 'changeUser': {
       if (action.user)
-        return { user: action.user, folder: state.folder, folders: action.folders, lastAction: 'changeUser', books: state.books, isMobile: state.isMobile };
+        return { user: action.user, folder: state.folder, folders: action.folders, lastAction: 'changeUser', books: !state.isMobile, isMobile: state.isMobile };
       else
-        return initialState;
+        return { user: '',  folder: 'Main', folders: [{ folderName: 'Main', Notes: [] }], lastAction: '', books: state.books, isMobile: state.isMobile };
     }
     case 'changeFolder': return { user: state.user, folder: action.folder, folders: state.folders, lastAction: 'changeFolder', books: state.books, isMobile: state.isMobile };
     case 'addFolder':

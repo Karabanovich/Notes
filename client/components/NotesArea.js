@@ -41,7 +41,7 @@ const Note = styled.div`
 `
 const Notes = styled.div`
     margin-top:15px;
-    text-align:center;
+    text-align:${props=>props.align?'center':'default'};
 `
 
 // width: fit-content; ???
@@ -108,7 +108,7 @@ class NotesArea extends Component {
                         this.setState({ filter: e.target.value });
                     }} />
                 </SearchBox>
-                <Notes>
+                <Notes align={store.getState().isMobile}>
                     <WriteArea store={this.props.store} />
                     {
                         store.getState().folders.map((el) => {
