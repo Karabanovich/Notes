@@ -92,7 +92,7 @@ const Popup = styled.div`
     top:0px;
 `
 const PopupCont = styled.div`
-    margin:300px auto 0px auto;
+    margin:30% auto 30% auto;
     width:200px;
     padding:5px;
     background-color: #c5c5c5;
@@ -102,7 +102,7 @@ const PopupCont = styled.div`
     flex-direction:column;
     align-items:center;
 `
-const DeleteText = styled.div`
+const DelText = styled.div`
     text-align:center;
 `
 const DelButton = styled.a` 
@@ -176,7 +176,7 @@ class Folders extends Component {
                                     this.setState({ del: false });
                             }}>
                                 <PopupCont >
-                                    <div>Are you sure you want to delete the folder?</div>
+                                    <DelText>Are you sure you want to delete this Book?</DelText>
                                     <DelButton onClick={() => {
                                         store.dispatch({
                                             type: 'deleteFolder', folder: store.getState().folder

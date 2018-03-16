@@ -16,53 +16,28 @@ const Header = styled.div`
   font-size:18px;
   z-index:5;
 `;
-const Books = styled.a` 
-    text-align:center;
+const Books = styled.i` 
     position:absolute;
-    top:10px;
-    left:1%;
-    height:30px;
-    width:80px;
+    top:12px;
+    left:3%;
     cursor: pointer;
-    user-select:none; 
-    font-weight: 400; 
-    color: #264a62; 
-    text-decoration: none;
-    border-radius: 3px; 
-    background: white; 
-    box-shadow: 0 -3px #1b4f52 inset; 
-    transition: 0.2s;  
+    color:#ffffff73;
+    user-select:none;   
     &:hover {
-        background: #4b8890; 
+      color:white;
     } 
-    &:active { 
-        background: #2e5d63; 
-        box-shadow: 0 3px #3b787f inset; 
-    }
 `
-const Out = styled.a` 
-text-align:center;
+const Out = styled.i` 
 position:absolute;
-top:10px;
-right:1%;
-height:30px;
-width:80px;
+top:12px;
+right:3%;
+color:#ffffff73;
 cursor: pointer;
-user-select:none; 
-font-weight: 400; 
-color: #264a62; 
-text-decoration: none;
-border-radius: 3px; 
-background: white; 
-box-shadow: 0 -3px #1b4f52 inset; 
-transition: 0.2s;  
+user-select:none;   
 &:hover {
-    background: #4b8890; 
+  color:white;
 } 
-&:active { 
-    background: #2e5d63; 
-    box-shadow: 0 3px #3b787f inset; 
-}
+
 `
 
 class Head extends Component {
@@ -81,16 +56,16 @@ class Head extends Component {
     return (
       <Header>
         {store.getState().user&&store.getState().isMobile ?
-          <Books onClick={() => {
+          <Books className="material-icons" onClick={() => {
             store.dispatch({ type: 'dispBooks',disp:!store.getState().books });
-          }}>Books</Books>
+          }}>menu</Books>
           : null
         }
         {store.getState().user ?
-          <Out onClick={() => {
+          <Out className="material-icons" onClick={() => {
             store.dispatch({ type: 'changeUser', user: '' });
             this.props.history.push('/Signin/');
-          }}>Log out</Out>
+          }}>exit_to_app</Out>
           : null}
         <div>Notes</div>
       </Header>
