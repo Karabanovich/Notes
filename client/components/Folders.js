@@ -18,6 +18,20 @@ const Folds = styled.div`
     background:#fafafa;
     flex-direction: column;
     overflow:auto;
+
+    &:hover::-webkit-scrollbar-thumb{
+        background: #729aa4a3;
+    }
+    &::-webkit-scrollbar{
+        width:10px;
+    }
+    &::-webkit-scrollbar-thumb{
+        background: #fafafa ;
+        border-radius:5px;
+    }
+    &::-webkit-scrollbar-thumb:hover{
+        background: #266473a3;
+    }
 `
 const Li = styled.div`
     background:${props => props.clr};
