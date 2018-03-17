@@ -94,7 +94,7 @@ const Popup = styled.div`
     z-index:5;
 `
 const PopupCont = styled.div`
-    margin:8em auto 0% auto;
+    margin:20% auto 20% auto;
     width:200px;
     padding:5px;
     background-color: #c5c5c5;
@@ -109,6 +109,7 @@ const DelText = styled.div`
 `
 const DelButton = styled.a` 
     height:10px;
+    margin:5px 0 3px 0;
     cursor: pointer;
     user-select:none; 
     font-weight: 700; 

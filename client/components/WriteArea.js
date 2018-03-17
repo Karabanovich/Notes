@@ -1,34 +1,41 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import image from '../pic/label.png';
-const Write = styled.div`
-    width:200px;
-    display:inline-block;
-    flex-direction:column;
-    align-items:center;
-    background-color:#fafafa;
-    height:calc(100% - 48px);
+
+const Li = styled.li`
+    display: inline-block;
+    margin: 0px 20px 20px 20px;
+    
+    transition: 0.2s;  
 `
-const NoteForm = styled.div`
-    width:80%;
-    margin-top:10px;
+const Head = styled.div`
     display:flex;
-    flex-direction:column;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    height:170px;
-    border-radius:2px; 
+    justify-content:space-between;
+    background-color:#f1f5f4;
+    height:15%;
+    align-items:center;
+    
 `
+const Note = styled.div`
+    display:flex;
+    flex-direction: column;
+    margin: 0px 10px 10px 10px;
+    width:200px;
+    height:230px;
+    border-radius:2px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+`
+
 const Textarea = styled.textarea`
     border:none;
-    height:150px;
+    height:85%;
     resize: none;
 `
 const Title = styled.textarea`
     border:none;
     background-color:#f1f5f4;
-    height:20px;
     resize: none;
-    
+    height:85%;
 `
 const Label = styled.label`  
     font-weight: 650;     
@@ -64,29 +71,6 @@ const Button = styled.a`
         background: #2e5d63; 
         box-shadow: 0 3px #3b787f inset; 
     }
-`
-const Li = styled.li`
-    display: inline-block;
-    margin: 0px 20px 20px 20px;
-    
-    transition: 0.2s;  
-`
-const Head = styled.div`
-    display:flex;
-    justify-content:space-between;
-    background-color:#f1f5f4;
-    height:30px;
-    align-items:center;
-    
-`
-const Note = styled.div`
-    display:flex;
-    flex-direction: column;
-    margin: 0px 10px 10px 10px;
-    width:180px;
-    height:200px;
-    border-radius:2px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
 `
 const Img = styled.img`
     position: relative;
@@ -151,7 +135,7 @@ class WriteArea extends Component {
                             }
                         }}>note_add</AddIcon>
                     </Head>
-                    <Textarea maxLength="180" placeholder="Text" value={this.state.text} onChange={(e) => {
+                    <Textarea maxLength="250" placeholder="Text" value={this.state.text} onChange={(e) => {
                         this.setState({ text: e.target.value });
                     }}></Textarea>
                 </Note>

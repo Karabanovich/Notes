@@ -34,9 +34,9 @@ const Note = styled.div`
     display:flex;
     flex-direction: column;
     margin: 0px 10px 10px 10px;
-    width:180px;
-    height:200px;
-    border-radius:2px;
+    width:200px;
+    height:230px;
+    border-radius:4px;
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
 `
 const Notes = styled.div`
@@ -50,20 +50,19 @@ const Li = styled.li`
     display: inline-block;
     margin: 0px 20px 20px 20px;
     position:relative;
-    transition: 0.2s;  
 `
 const Head = styled.div`
     display:flex;
     justify-content:space-between;
     background-color:#f1f5f4;
-    height:30px;
+    height:15%;
     align-items:center;
     
 `
 const Title = styled.div`
     width: 150px;
     text-align:center;
-    height:30px;
+    height:85%;
     font-weight: 700; 
 `
 const Text = styled.div`
@@ -113,15 +112,27 @@ const PopupCont = styled.div`
 `
 const Menu = styled.div`
     position:absolute;
-    top:30px;
-    left:150px;
-    min-width:60px;
+    top:15%;
+    right:13px;
+    padding:5px 0px 5px 0px;
+    width:80px;
     background:white;
     display:flex;
     flex-direction:column;
+    border-radius:3px;
     box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    &::after {
+        content: ''; 
+        position: absolute; /* Абсолютное позиционирование */
+        right: 5px;
+        top: -10px; /* Положение треугольника */
+        border: 5px solid transparent; /* Прозрачные границы */
+        border-bottom: 5px solid #e2e2e2; /* Добавляем треугольник */
+    }
+    
 `
-const MenuSend = styled.div`  
+const MenuSend = styled.div` 
+    padding-left:5px; 
     cursor:pointer;
     user-select:none;
     &:hover {
@@ -129,13 +140,47 @@ const MenuSend = styled.div`
     }
 `
 const MenuDel = styled.div`
+    padding-left:5px; 
     cursor:pointer;
     user-select:none;
     &:hover {
         background:#edeef0;
     } 
-    color:red;
+    color:#a2040b;
 `
+const Button = styled.a` 
+    cursor: pointer;
+    margin:10px 10px 5px 10px;
+    height:20px;
+    user-select:none; 
+    font-weight: 700; 
+    color: white; 
+    text-decoration: none; 
+    padding: .4em 1em calc(.4em + 1px); 
+    border-radius: 5px; 
+    background: #3b787f; 
+    box-shadow: 0 -3px #1b4f52 inset; 
+    transition: 0.2s;  
+    &:hover {
+        background: #4b8890; 
+    } 
+    &:active { 
+        background: #2e5d63; 
+        box-shadow: 0 3px #3b787f inset; 
+    }
+`
+
+const Input = styled.input`
+    margin:10px 10px 0px 10px;   
+    padding-left:1em;
+    height:30px;
+    resize: none;
+    border:none;
+    border-radius: 5px; 
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    background-color: white;
+`
+
 class NotesArea extends Component {
     constructor(props) {
         super(props);
@@ -168,18 +213,17 @@ class NotesArea extends Component {
                                 this.setState({ usSend: false, username: null, wrongUser: false });
                         }}>
                             <PopupCont >
-                                <div>Send Note</div>
-                                <div>Username:</div>
+                                <div >Send to:</div>
                                 {
                                     this.state.wrongUser ?
-                                        <div>Wrong Username!!!</div>
+                                        <div>invalid username</div>
                                         : null
                                 }
-                                <input value={this.state.username} onChange={(e) => {
+                                <Input  placeholder="username" value={this.state.username} onChange={(e) => {
                                     this.setState({ username: e.target.value })
                                 }} />
 
-                                <button onClick={() => {
+                                <Button onClick={() => {
                                     if (this.state.username === store.getState().user)
                                         this.setState({ wrongUser: true })
                                     else
@@ -188,7 +232,7 @@ class NotesArea extends Component {
                                         });
 
                                 }}>
-                                    OK</button>
+                                    OK</Button>
                             </PopupCont>
                         </Popup>
                         : null
