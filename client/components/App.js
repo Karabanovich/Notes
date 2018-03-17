@@ -14,7 +14,7 @@ function reducer(state, action) {
       if (action.user)
         return { user: action.user, folder: state.folder, folders: action.folders, lastAction: 'changeUser', books: !state.isMobile, isMobile: state.isMobile };
       else
-        return { user: '',  folder: 'Main', folders: [{ folderName: 'Main', Notes: [] }], lastAction: '', books: state.books, isMobile: state.isMobile };
+        return { user: '', folder: 'Main', folders: [{ folderName: 'Main', Notes: [] }], lastAction: '', books: state.books, isMobile: state.isMobile };
     }
     case 'changeFolder': return { user: state.user, folder: action.folder, folders: state.folders, lastAction: 'changeFolder', books: state.books, isMobile: state.isMobile };
     case 'addFolder':
@@ -106,22 +106,25 @@ function reducer(state, action) {
       }
     case 'sendNote':
       {
-        NoteActions.sendNote(state.user, action.note, action.user);
-        if (state.user === action.user) {
-          if (state.folders[state.folders.length - 1].folderName !== 'Inbox')
-            return {
-              user: state.user,
-              folder: state.folder,
-              folders: state.folders.concat({ folderName: 'Inbox', Notes: [Object.assign(action.note, { from: state.user })] }),
-              lastAction: 'sendNote',
-              books: state.books,
-              isMobile: state.isMobile
-            };
-          let fldrs = state.folders.slice();
-          fldrs[fldrs.length - 1].Notes.push(Object.assign(action.note, { from: state.user }));
-          return { user: state.user, folder: state.folder, folders: fldrs, lastAction: 'sendNote', books: state.books, isMobile: state.isMobile };
-        }
-        return state;
+        if (action.user !== state.user)
+          NoteActions.sendNote(state.user, action.note, action.user, state).then((res, rej) => {
+            if (res) {
+              store.dispatch({ type: 'okSend' });
+            }
+            else {
+              store.dispatch({ type: 'erSend' });
+            }
+          })
+        return Object.assign(state,{lastAction:'nothing'});
+
+      }
+    case 'okSend':
+      {
+        return { user: state.user, folder: state.folder, folders: state.folders, lastAction: 'okSend', books: state.books, isMobile: state.isMobile };
+      }
+    case 'erSend':
+      {
+        return { user: state.user, folder: state.folder, folders: state.folders, lastAction: 'erSend', books: state.books, isMobile: state.isMobile };
       }
     case 'dispBooks':
       {

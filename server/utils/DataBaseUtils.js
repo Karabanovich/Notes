@@ -49,7 +49,7 @@ export function addNote(data) {
                 let j = doc.Folders[data.folder].Notes.findIndex((el) => {
                     return !el.label;
                 });
-                if(j!==-1)
+                if (j !== -1)
                     doc.Folders[data.folder].Notes.splice(j, 0, data.note);
                 else
                     doc.Folders[data.folder].Notes.push(data.note);
@@ -113,7 +113,7 @@ export function addLabel(data) {
     var F = false;
     User.findOne({ Name: data.user }, (err, doc) => {
         if (doc) {
-            let ind=0;
+            let ind = 0;
             if (!data.label) {
                 ind = doc.Folders[data.folder].Notes.findIndex((el) => {
                     return !el.label;
@@ -140,8 +140,7 @@ export function addLabel(data) {
     return new Promise((res, rej) => { res(F) });
 }
 export function sendNote(data) {
-    var F = false;
-    User.findOne({ Name: data.rec }, (err, doc) => {
+    return User.findOne({ Name: data.rec }, (err, doc) => {
         if (doc) {
             let i = doc.Folders.findIndex((el) => {
                 if (el.folderName === 'Inbox')
@@ -150,15 +149,27 @@ export function sendNote(data) {
                     return false;
             })
             if (i >= 0) {
-                doc.Folders[i].Notes.unshift(Object.assign(data.note, { from: data.sen }));
+                if (data.note.label)
+                    doc.Folders[i].Notes.unshift(Object.assign(data.note, { from: data.sen }));
+                else {
+                    let j = doc.Folders[i].Notes.findIndex((el) => {
+                        return !el.label;
+                    });
+                    if (j !== -1)
+                        doc.Folders[i].Notes.splice(j, 0, Object.assign(data.note, { from: data.sen }));
+                    else
+                        doc.Folders[i].Notes.push(Object.assign(data.note, { from: data.sen }));
+                }
             }
             else
                 doc.Folders.push({ folderName: 'Inbox', Notes: [Object.assign(data.note, { from: data.sen })] })
             User.update({ Name: data.rec }, {
                 Folders: doc.Folders
             }, { "multi": true }, () => { });
-            F = true;
         }
+
+    }).then((user) => {
+        return new Promise((res, rej) => { res(user ? true : false) });
     })
-    return new Promise((res, rej) => { res(F) });
+
 }

@@ -113,18 +113,24 @@ class WriteArea extends Component {
         this.state = { title: '', text: '', label: false };
     }
     componentDidMount() {
-        this.props.store.subscribe(() => this.forceUpdate());
+        this.unsubscribe = this.props.store.subscribe(() => {
+            if (this.refs.write)
+                this.forceUpdate()
+        });
+    }
+    componentWillUnmount() {
+        this.unsubscribe();
     }
     render() {
         const store = this.props.store;
         return (
-            <Li>
+            <Li ref='write'>
                 <Note>
                     <Head>
                         <Img op={this.state.label ? 1 : 0} src={image} onClick={() => {
                             this.setState({ label: !this.state.label });
                         }} />
-                        <Title placeholder="Title" value={this.state.title} onChange={(e) => {
+                        <Title maxLength="15" placeholder="Title" value={this.state.title} onChange={(e) => {
                             this.setState({ title: e.target.value });
                         }}></Title>
                         <AddIcon className="material-icons" onClick={() => {

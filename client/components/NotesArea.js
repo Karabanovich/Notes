@@ -4,7 +4,7 @@ import image from '../pic/label.png';
 import WriteArea from './WriteArea';
 
 const NotesAndSearch = styled.div`
-    margin-left:${props=>props.isMobile?'0':'200px'};
+    margin-left:${props => props.isMobile ? '0' : '200px'};
     height:100%;
     width:100%;
     display:flex;
@@ -41,7 +41,7 @@ const Note = styled.div`
 `
 const Notes = styled.div`
     margin-top:15px;
-    text-align:${props=>props.align?'center':'default'};
+    text-align:${props => props.align ? 'center' : 'default'};
 `
 
 // width: fit-content; ???
@@ -62,7 +62,7 @@ const Head = styled.div`
 `
 const Title = styled.div`
     width: 150px;
-    min-width:120px;
+    //min-width:120px;
     height:30px;
     font-weight: 700; 
 `
@@ -88,15 +88,46 @@ const Img = styled.img`
     &:hover {
        opacity:0.4
     }
-
+`
+const Popup = styled.div`
+    width:100%;
+    min-height:100%;
+    background-color: rgba(0,0,0,0.5);
+    overflow:hidden;
+    position:fixed;
+    top:0px;
+`
+const PopupCont = styled.div`
+    margin:30% auto 30% auto;
+    width:200px;
+    padding:5px;
+    background-color: #c5c5c5;
+    border-radius:5px;
+    box-shadow: 0px 0px 10px #000;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 `
 class NotesArea extends Component {
     constructor(props) {
         super(props);
-        this.state = { filter: '' };
+        this.state = { filter: '', usSend: false, note: null, username: null, wrongUser: false };
     }
     componentDidMount() {
-        this.props.store.subscribe(() => this.forceUpdate());
+        this.unsubscribe = this.props.store.subscribe(() => {
+            if (this.refs.notes && this.props.store.getState().lastAction !== 'nothing')
+                this.forceUpdate();
+            if (this.props.store.getState().lastAction === 'okSend') {
+                console.log('OK');
+                this.setState({ usSend: false, wrongUser: false, username: null });
+            }
+            else if (this.props.store.getState().lastAction === 'erSend') {
+                this.setState({ wrongUser: true });
+            }
+        });
+    }
+    componentWillUnmount() {
+        this.unsubscribe();
     }
     render() {
         const store = this.props.store;
@@ -108,8 +139,12 @@ class NotesArea extends Component {
                         this.setState({ filter: e.target.value });
                     }} />
                 </SearchBox>
-                <Notes align={store.getState().isMobile}>
-                    <WriteArea store={this.props.store} />
+                <Notes ref='notes' align={store.getState().isMobile}>
+                    {
+                        store.getState().folder !== 'Inbox' ?
+                            <WriteArea store={this.props.store} />
+                            : null
+                    }
                     {
                         store.getState().folders.map((el) => {
                             if (el.folderName === store.getState().folder) {
@@ -117,7 +152,13 @@ class NotesArea extends Component {
                                     if (el.title.search(this.state.filter) !== -1)
                                         return (
                                             <Li>
+                                                {
+                                                    el.from ?
+                                                        <div>From:{el.from}</div>
+                                                        : null
+                                                }
                                                 <Note>
+
                                                     <Head>
                                                         <Img op={el.label ? 1 : 0} src={image} onClick={() => {
                                                             store.dispatch({
@@ -127,6 +168,9 @@ class NotesArea extends Component {
                                                         <Title>
                                                             {el.title}
                                                         </Title>
+                                                        <DelIcon className="material-icons" onClick={() => {
+                                                            this.setState({ usSend: true, note: el });
+                                                        }}>send</DelIcon>
                                                         <DelIcon className="material-icons" onClick={() => {
                                                             store.dispatch({
                                                                 type: 'deleteNote', id: i
@@ -141,6 +185,38 @@ class NotesArea extends Component {
                                 })
                             }
                         })
+                    }
+                    {
+                        this.state.usSend ?
+                            <Popup id='Popup' onClick={(e) => {
+                                if (e.target.id === 'Popup')
+                                    this.setState({ usSend: false, username: null, wrongUser: false });
+                            }}>
+                                <PopupCont >
+                                    <div>Send Note</div>
+                                    <div>Username:</div>
+                                    {
+                                        this.state.wrongUser ?
+                                            <div>Wrong Username!!!</div>
+                                            : null
+                                    }
+                                    <input value={this.state.username} onChange={(e) => {
+                                        this.setState({ username: e.target.value })
+                                    }} />
+
+                                    <button onClick={() => {
+                                        if (this.state.username === store.getState().user)
+                                            this.setState({ wrongUser: true })
+                                        else
+                                            store.dispatch({
+                                                type: 'sendNote', note: this.state.note, user: this.state.username
+                                            });
+
+                                    }}>
+                                        OK</button>
+                                </PopupCont>
+                            </Popup>
+                            : null
                     }
                 </Notes>
 

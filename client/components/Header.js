@@ -45,19 +45,22 @@ class Head extends Component {
     super(props);
   }
   componentDidMount() {
-    this.props.store.subscribe(() => {
-      let a=this.props.store.getState().lastAction;
-      if ( a=== 'changeUser'||a==='mobile')
+    this.unsubscribe=this.props.store.subscribe(() => {
+      let a = this.props.store.getState().lastAction;
+      if (this.refs.header && (a === 'changeUser' || a === 'mobile'))
         this.forceUpdate()
     });
+  }
+  componentWillUnmount(){
+    this.unsubscribe();
   }
   render() {
     const store = this.props.store;
     return (
-      <Header>
-        {store.getState().user&&store.getState().isMobile ?
+      <Header ref='header'>
+        {store.getState().user && store.getState().isMobile ?
           <Books className="material-icons" onClick={() => {
-            store.dispatch({ type: 'dispBooks',disp:!store.getState().books });
+            store.dispatch({ type: 'dispBooks', disp: !store.getState().books });
           }}>menu</Books>
           : null
         }

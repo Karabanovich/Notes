@@ -7,7 +7,7 @@ import './style.css';
 ReactDOM.render(
     <HashRouter >
         <div className="height">
-            <Redirect to="/Signin" />
+            <Redirect to="/Signin" key='toSign'/>
             <App />
         </div>
     </HashRouter >,

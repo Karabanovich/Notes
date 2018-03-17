@@ -131,11 +131,14 @@ class Folders extends Component {
         this.state = { Name: '', f: false, del: false };
     }
     componentDidMount() {
-        this.props.store.subscribe(() => {
+        this.unsubscribe = this.props.store.subscribe(() => {
             let a = this.props.store.getState().lastAction;
             if (this.refs.fldrs && (a === 'addFolder' || a === 'deleteFolder' || a === 'changeUser' || a === 'changeFolder') || a === 'dispBooks')
                 this.forceUpdate()
         });
+    }
+    componentWillUnmount() {
+        this.unsubscribe();
     }
     render() {
         const store = this.props.store;
@@ -156,8 +159,8 @@ class Folders extends Component {
                         this.state.f ? <Input type="text" maxLength="23" onChange={(e) => { this.setState({ Name: e.target.value }) }} /> : null
                     }
                     <Folds>
-                        {store.getState().folders.map((el) => (
-                            <Li clr={store.getState().folder === el.folderName ? 'rgb(255,255,255)' : '#fafafa'} onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
+                        {store.getState().folders.map((el, i) => (
+                            <Li key={i} clr={store.getState().folder === el.folderName ? 'rgb(255,255,255)' : '#fafafa'} onClick={() => { store.dispatch({ type: 'changeFolder', folder: el.folderName }) }}>
                                 <img src={image} width="20px" height="20px" />
                                 <FolderName>{el.folderName}</FolderName>
                                 {store.getState().folder === el.folderName && el.folderName !== 'Main' ?
