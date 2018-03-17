@@ -130,9 +130,13 @@ class WriteArea extends Component {
                         <Img op={this.state.label ? 1 : 0} src={image} onClick={() => {
                             this.setState({ label: !this.state.label });
                         }} />
-                        <Title maxLength="15" placeholder="Title" value={this.state.title} onChange={(e) => {
+                        <Title maxLength="13" placeholder="Title" value={this.state.title} onChange={(e) => {
                             this.setState({ title: e.target.value });
-                        }}></Title>
+                        }}
+                            onKeyDown ={(e) => {
+                                if (e.keyCode === 13)
+                                    e.preventDefault();
+                            }}></Title>
                         <AddIcon className="material-icons" onClick={() => {
                             if (this.state.text && this.state.title) {
                                 this.setState({ title: '', text: '', label: false });
@@ -147,7 +151,7 @@ class WriteArea extends Component {
                             }
                         }}>note_add</AddIcon>
                     </Head>
-                    <Textarea placeholder="Text" value={this.state.text} onChange={(e) => {
+                    <Textarea maxLength="180" placeholder="Text" value={this.state.text} onChange={(e) => {
                         this.setState({ text: e.target.value });
                     }}></Textarea>
                 </Note>

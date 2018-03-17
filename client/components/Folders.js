@@ -89,10 +89,12 @@ const Popup = styled.div`
     background-color: rgba(0,0,0,0.5);
     overflow:hidden;
     position:fixed;
-    top:0px;
+    top:0;
+    left:0;
+    z-index:5;
 `
 const PopupCont = styled.div`
-    margin:30% auto 30% auto;
+    margin:8em auto 0% auto;
     width:200px;
     padding:5px;
     background-color: #c5c5c5;

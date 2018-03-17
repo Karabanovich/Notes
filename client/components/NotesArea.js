@@ -62,7 +62,7 @@ const Head = styled.div`
 `
 const Title = styled.div`
     width: 150px;
-    //min-width:120px;
+    text-align:center;
     height:30px;
     font-weight: 700; 
 `
@@ -95,10 +95,12 @@ const Popup = styled.div`
     background-color: rgba(0,0,0,0.5);
     overflow:hidden;
     position:fixed;
-    top:0px;
+    top:48px;
+    left:0;
+    z-index:5;
 `
 const PopupCont = styled.div`
-    margin:30% auto 30% auto;
+    margin:8em auto 0% auto;
     width:200px;
     padding:5px;
     background-color: #c5c5c5;
@@ -133,6 +135,38 @@ class NotesArea extends Component {
         const store = this.props.store;
         return (
             <NotesAndSearch isMobile={store.getState().isMobile}>
+                  {
+                        this.state.usSend ?
+                            <Popup id='Popup' onClick={(e) => {
+                                if (e.target.id === 'Popup')
+                                    this.setState({ usSend: false, username: null, wrongUser: false });
+                            }}>
+                                <PopupCont >
+                                    <div>Send Note</div>
+                                    <div>Username:</div>
+                                    {
+                                        this.state.wrongUser ?
+                                            <div>Wrong Username!!!</div>
+                                            : null
+                                    }
+                                    <input value={this.state.username} onChange={(e) => {
+                                        this.setState({ username: e.target.value })
+                                    }} />
+
+                                    <button onClick={() => {
+                                        if (this.state.username === store.getState().user)
+                                            this.setState({ wrongUser: true })
+                                        else
+                                            store.dispatch({
+                                                type: 'sendNote', note: this.state.note, user: this.state.username
+                                            });
+
+                                    }}>
+                                        OK</button>
+                                </PopupCont>
+                            </Popup>
+                            : null
+                    }
                 <SearchBox>
                     <SearchIcon className="material-icons">search</SearchIcon>
                     <Search placeholder="Search" onChange={(e) => {
@@ -186,38 +220,7 @@ class NotesArea extends Component {
                             }
                         })
                     }
-                    {
-                        this.state.usSend ?
-                            <Popup id='Popup' onClick={(e) => {
-                                if (e.target.id === 'Popup')
-                                    this.setState({ usSend: false, username: null, wrongUser: false });
-                            }}>
-                                <PopupCont >
-                                    <div>Send Note</div>
-                                    <div>Username:</div>
-                                    {
-                                        this.state.wrongUser ?
-                                            <div>Wrong Username!!!</div>
-                                            : null
-                                    }
-                                    <input value={this.state.username} onChange={(e) => {
-                                        this.setState({ username: e.target.value })
-                                    }} />
-
-                                    <button onClick={() => {
-                                        if (this.state.username === store.getState().user)
-                                            this.setState({ wrongUser: true })
-                                        else
-                                            store.dispatch({
-                                                type: 'sendNote', note: this.state.note, user: this.state.username
-                                            });
-
-                                    }}>
-                                        OK</button>
-                                </PopupCont>
-                            </Popup>
-                            : null
-                    }
+              
                 </Notes>
 
             </NotesAndSearch>
