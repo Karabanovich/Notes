@@ -49,7 +49,7 @@ const Notes = styled.div`
 const Li = styled.li`
     display: inline-block;
     margin: 0px 20px 20px 20px;
-    
+    position:relative;
     transition: 0.2s;  
 `
 const Head = styled.div`
@@ -72,6 +72,7 @@ const Text = styled.div`
     word-wrap:break-word; 
 `
 const DelIcon = styled.i`
+    user-select:none;
     cursor:pointer;
     color:#266473a3;
     &:hover {
@@ -110,10 +111,35 @@ const PopupCont = styled.div`
     flex-direction:column;
     align-items:center;
 `
+const Menu = styled.div`
+    position:absolute;
+    top:30px;
+    left:150px;
+    min-width:60px;
+    background:white;
+    display:flex;
+    flex-direction:column;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+`
+const MenuSend = styled.div`  
+    cursor:pointer;
+    user-select:none;
+    &:hover {
+        background:#edeef0;
+    }
+`
+const MenuDel = styled.div`
+    cursor:pointer;
+    user-select:none;
+    &:hover {
+        background:#edeef0;
+    } 
+    color:red;
+`
 class NotesArea extends Component {
     constructor(props) {
         super(props);
-        this.state = { filter: '', usSend: false, note: null, username: null, wrongUser: false };
+        this.state = { filter: '', usSend: false, note: null, username: null, wrongUser: false, usOpenMenu: false, noteMenu: null };
     }
     componentDidMount() {
         this.unsubscribe = this.props.store.subscribe(() => {
@@ -134,39 +160,39 @@ class NotesArea extends Component {
     render() {
         const store = this.props.store;
         return (
-            <NotesAndSearch isMobile={store.getState().isMobile}>
-                  {
-                        this.state.usSend ?
-                            <Popup id='Popup' onClick={(e) => {
-                                if (e.target.id === 'Popup')
-                                    this.setState({ usSend: false, username: null, wrongUser: false });
-                            }}>
-                                <PopupCont >
-                                    <div>Send Note</div>
-                                    <div>Username:</div>
-                                    {
-                                        this.state.wrongUser ?
-                                            <div>Wrong Username!!!</div>
-                                            : null
-                                    }
-                                    <input value={this.state.username} onChange={(e) => {
-                                        this.setState({ username: e.target.value })
-                                    }} />
+            <NotesAndSearch isMobile={store.getState().isMobile} onClick ={()=>{this.setState({usOpenMenu:false, noteMenu:null})}}>
+                {
+                    this.state.usSend ?
+                        <Popup id='Popup' onClick={(e) => {
+                            if (e.target.id === 'Popup')
+                                this.setState({ usSend: false, username: null, wrongUser: false });
+                        }}>
+                            <PopupCont >
+                                <div>Send Note</div>
+                                <div>Username:</div>
+                                {
+                                    this.state.wrongUser ?
+                                        <div>Wrong Username!!!</div>
+                                        : null
+                                }
+                                <input value={this.state.username} onChange={(e) => {
+                                    this.setState({ username: e.target.value })
+                                }} />
 
-                                    <button onClick={() => {
-                                        if (this.state.username === store.getState().user)
-                                            this.setState({ wrongUser: true })
-                                        else
-                                            store.dispatch({
-                                                type: 'sendNote', note: this.state.note, user: this.state.username
-                                            });
+                                <button onClick={() => {
+                                    if (this.state.username === store.getState().user)
+                                        this.setState({ wrongUser: true })
+                                    else
+                                        store.dispatch({
+                                            type: 'sendNote', note: this.state.note, user: this.state.username
+                                        });
 
-                                    }}>
-                                        OK</button>
-                                </PopupCont>
-                            </Popup>
-                            : null
-                    }
+                                }}>
+                                    OK</button>
+                            </PopupCont>
+                        </Popup>
+                        : null
+                }
                 <SearchBox>
                     <SearchIcon className="material-icons">search</SearchIcon>
                     <Search placeholder="Search" onChange={(e) => {
@@ -191,8 +217,22 @@ class NotesArea extends Component {
                                                         <div>From:{el.from}</div>
                                                         : null
                                                 }
-                                                <Note>
 
+                                                {
+                                                    el === this.state.noteMenu && this.state.usOpenMenu ?
+                                                        <Menu >
+                                                            <MenuSend  onClick={() => {
+                                                                this.setState({ usSend: true, note: el });
+                                                            }}>Send</MenuSend>
+                                                            <MenuDel  onClick={() => {
+                                                                store.dispatch({
+                                                                    type: 'deleteNote', id: i
+                                                                })
+                                                            }}>Delete</MenuDel>
+                                                        </Menu>
+                                                        : null
+                                                }
+                                                <Note>
                                                     <Head>
                                                         <Img op={el.label ? 1 : 0} src={image} onClick={() => {
                                                             store.dispatch({
@@ -202,16 +242,20 @@ class NotesArea extends Component {
                                                         <Title>
                                                             {el.title}
                                                         </Title>
-                                                        <DelIcon className="material-icons" onClick={() => {
-                                                            this.setState({ usSend: true, note: el });
-                                                        }}>send</DelIcon>
-                                                        <DelIcon className="material-icons" onClick={() => {
-                                                            store.dispatch({
-                                                                type: 'deleteNote', id: i
-                                                            })
-                                                        }}>delete</DelIcon>
+
+                                                        <DelIcon className="material-icons" onClick={(event) => {
+                                                            this.state.usOpenMenu ?
+                                                                this.state.noteMenu === el ?
+                                                                    this.setState({ usOpenMenu: false, noteMenu: null }) :
+                                                                    this.setState({ usOpenMenu: true, noteMenu: el }) :
+                                                                this.setState({ usOpenMenu: true, noteMenu: el })
+                                                        
+                                                                event.stopPropagation();
+                                                        }}>
+                                                            more_horiz</DelIcon>
                                                     </Head>
                                                     <Text>{el.text}</Text>
+
                                                 </Note>
                                             </Li>
 
@@ -220,7 +264,7 @@ class NotesArea extends Component {
                             }
                         })
                     }
-              
+
                 </Notes>
 
             </NotesAndSearch>
